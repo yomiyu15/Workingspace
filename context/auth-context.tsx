@@ -10,6 +10,7 @@ import {
 import axios from "axios";
 
 interface User {
+  name: ReactNode;
   id: string;
   username: string;
   role: "user" | "admin";
@@ -58,6 +59,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           username: res.data.username,
           role: res.data.role,
           token: res.data.token,
+          name: undefined
         };
         localStorage.setItem("user", JSON.stringify(adminUser));
         setUser(adminUser);
