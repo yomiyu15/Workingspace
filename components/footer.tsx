@@ -95,6 +95,9 @@ export function Footer() {
               <a href="#" className="hover:text-white transition text-sm">
                 Support
               </a>
+              <a href="/login" className="hover:text-white transition text-sm text-gray-400 hover:text-gray-300">
+                Admin Login
+              </a>
             </div>
           </div>
         </div>
