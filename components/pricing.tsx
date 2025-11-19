@@ -1,8 +1,6 @@
-"use client"
+'use client'
 
-import { motion } from "framer-motion"
-import { Check } from "lucide-react"
-import { AnimatedStagger, AnimatedItem } from "./animation-wrapper"
+import { Check } from 'lucide-react'
 
 export function Pricing() {
   const plans = [
@@ -19,7 +17,6 @@ export function Pricing() {
         "No Contract Required",
         "Access 7 AM - 6 PM",
       ],
-      image: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&h=300&fit=crop",
     },
     {
       name: "Weekly Pass",
@@ -34,7 +31,6 @@ export function Pricing() {
         "Mail & Package Service",
         "Extended Hours (7 AM - 8 PM)",
       ],
-      image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=300&fit=crop",
       popular: true,
     },
     {
@@ -51,109 +47,87 @@ export function Pricing() {
         "24/7 Access",
         "Networking Events Access",
       ],
-      image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400&h=300&fit=crop",
     },
   ]
 
   return (
-    <section id="pricing" className="py-12 px-4 bg-slate-50">
+    <section id="pricing" className="py-16 px-4 bg-background">
       <div className="max-w-6xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-3 text-balance">
+        <div className="animate-fade-in">
+          <h4 className="text-3xl md:text-4xl font-bold text-center mb-3 text-balance bg-gradient-to-r from-accent via-primary to-accent bg-clip-text text-transparent">
             Affordable Pricing Plans
-          </h2>
-          <p className="text-center text-muted-foreground mb-10 max-w-2xl mx-auto text-sm md:text-base">
+          </h4>
+          <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto text-sm md:text-base">
             All prices in Ethiopian Birr (ETB). Choose the plan that fits your work style and budget.
           </p>
-        </motion.div>
+        </div>
 
-        <AnimatedStagger className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
           {plans.map((plan, index) => (
-            <AnimatedItem key={index} className="flex">
-              <motion.div
-                whileHover={{ y: -8, boxShadow: "0 20px 40px -12px rgba(0, 0, 0, 0.12)" }}
-                transition={{ type: "spring", stiffness: 300 }}
-                className={`rounded-lg overflow-hidden transition flex flex-col w-full ${
-                  plan.popular ? "ring-2 ring-blue-600 md:scale-105" : ""
+            <div
+              key={index}
+              className="flex animate-fade-in hover:scale-105 transition-transform duration-300"
+              style={{ animationDelay: `${0.1 * index}s` }}
+            >
+              <div
+                className={`rounded-xl overflow-hidden transition flex flex-col w-full shadow-lg hover:shadow-2xl ${
+                  plan.popular
+                    ? "ring-2 ring-accent md:scale-105 bg-gradient-to-br from-accent/10 to-primary/10"
+                    : "bg-card"
                 }`}
               >
-                {/* Image */}
-                <motion.div
-                  className="h-32 bg-cover bg-center flex-shrink-0"
-                  style={{ backgroundImage: `url("${plan.image}")` }}
-                  whileHover={{ scale: 1.03 }}
-                  transition={{ duration: 0.3 }}
-                />
-
                 {/* Content */}
-                <div className="p-4 bg-white flex flex-col flex-1 min-h-0">
+                <div className="p-6 flex flex-col flex-1">
                   {plan.popular && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="inline-block px-2 py-1 bg-blue-600 text-white text-xs font-semibold rounded-full mb-2 w-fit"
-                    >
+                    <div className="inline-block px-3 py-1 bg-gradient-to-r from-accent to-primary text-primary-foreground text-xs font-semibold rounded-full mb-3 w-fit">
                       Most Popular
-                    </motion.div>
+                    </div>
                   )}
                   
-                  <div className="flex flex-col flex-1 min-h-0">
-                    <h3 className="text-lg font-bold mb-1">{plan.name}</h3>
-                    <p className="text-muted-foreground text-xs mb-3 line-clamp-2">{plan.description}</p>
+                  <div className="flex flex-col flex-1">
+                    <h3 className="text-xl font-bold text-foreground mb-1">{plan.name}</h3>
+                    <p className="text-muted-foreground text-sm mb-4">{plan.description}</p>
 
-                    {/* Price with ETB */}
-                    <div className="mb-4 flex items-baseline gap-1">
-                      <span className="text-2xl font-bold">{plan.price}</span>
+                    {/* Price */}
+                    <div className="mb-5 flex items-baseline gap-2">
+                      <span className="text-3xl font-black bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent">
+                        {plan.price}
+                      </span>
                       <span className="text-xs text-muted-foreground">ETB</span>
-                      <span className="text-xs text-muted-foreground ml-1">{plan.period}</span>
+                      <span className="text-xs text-muted-foreground">{plan.period}</span>
                     </div>
 
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      className={`w-full py-2 rounded-lg font-semibold mb-4 text-sm transition ${
+                    <button
+                      className={`w-full py-3 rounded-lg font-bold mb-6 text-sm transition-all duration-300 hover:scale-105 hover:-translate-y-0.5 ${
                         plan.popular
-                          ? "bg-blue-600 hover:bg-blue-700 text-white"
-                          : "border-2 border-blue-600 text-blue-600 hover:bg-blue-50"
+                          ? "bg-gradient-to-r from-accent to-primary text-primary-foreground hover:shadow-lg"
+                          : "border-2 border-accent/40 text-accent hover:bg-accent/10 hover:border-accent/60"
                       }`}
                     >
                       Book Now
-                    </motion.button>
+                    </button>
 
-                    <motion.div
-                      className="space-y-1.5 flex-1 overflow-hidden"
-                      variants={{
-                        hidden: { opacity: 0 },
-                        visible: { opacity: 1, transition: { staggerChildren: 0.04 } },
-                      }}
-                      initial="hidden"
-                      whileInView="visible"
-                      viewport={{ once: true }}
-                    >
-                      <div className="max-h-32 overflow-y-auto pr-2">
+                    {/* Features list */}
+                    <div className="space-y-3 flex-1">
+                      <div className="max-h-40 overflow-y-auto pr-2">
                         {plan.features.map((feature, idx) => (
-                          <motion.div
+                          <div
                             key={idx}
-                            variants={{ hidden: { opacity: 0, x: -10 }, visible: { opacity: 1, x: 0 } }}
-                            className="flex items-start gap-2 py-0.5"
+                            className="flex items-start gap-3 py-1 animate-fade-in"
+                            style={{ animationDelay: `${0.05 * idx}s` }}
                           >
-                            <Check className="w-3 h-3 text-green-600 flex-shrink-0 mt-0.5" />
-                            <span className="text-xs leading-tight">{feature}</span>
-                          </motion.div>
+                            <Check className="w-4 h-4 text-accent flex-shrink-0 mt-0.5 font-bold" />
+                            <span className="text-sm text-foreground leading-tight">{feature}</span>
+                          </div>
                         ))}
                       </div>
-                    </motion.div>
+                    </div>
                   </div>
                 </div>
-              </motion.div>
-            </AnimatedItem>
+              </div>
+            </div>
           ))}
-        </AnimatedStagger>
+        </div>
       </div>
     </section>
   )

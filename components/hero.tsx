@@ -1,129 +1,98 @@
-"use client"
-
-import { motion } from "framer-motion"
-import bg from "../assets/copernico-cLmOptqvuFQ-unsplash.jpg"
+'use client'
+import img from "../assets/dane-deaner-_-KLkj7on_c-unsplash.jpg"
+import img2 from "../assets/copernico-p_kICQCOM4s-unsplash.jpg"
+import img3 from "../assets/dane-deaner-_-KLkj7on_c-unsplash.jpg"
+import img4 from "../assets/david-fintz-z-Jaxjj0KVY-unsplash.jpg"
+import image from "../assets/alesia-kazantceva-VWcPlbHglYc-unsplash.jpg"
 
 export function Hero() {
   return (
-    <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Image */}
-      <div
-        className="absolute inset-0"
-        style={{
-          backgroundImage: `url(${bg.src})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      />
+    <section className="relative w-full min-h-screen bg-white overflow-hidden">
+      <div className="relative w-full h-full flex items-stretch">
+        
+        {/* LEFT SECTION */}
+        <div className="w-full lg:w-1/2 relative z-20 py-16 sm:py-20 lg:py-28 px-6 sm:px-10 lg:px-22 flex flex-col justify-center bg-white">
+          
+          <div className="space-y-4 mb-6">
+            <h1 className="text-4xl sm:text-5xl lg:text-5xl font-black text-balance leading-tight text-foreground">
+              Your Workspace,{' '}
+              <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
+                Perfected
+              </span>
+            </h1>
+          </div>
 
-      {/* Dark overlay for better contrast */}
-      <div className="absolute inset-0 bg-black/50" />
+          <p className="text-sm sm:text-base text-muted-foreground leading-relaxed max-w-xl mb-8">
+            Discover premium coworking spaces designed for professionals. Book flexible day passes or monthly plans with world-class amenities and vibrant community.
+          </p>
 
-      {/* Animated colorful orbs */}
-      <motion.div
-        className="absolute top-20 left-10 w-72 h-72 bg-pink-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30"
-        animate={{ y: [0, -30, 0], x: [0, 20, 0], scale: [1, 1.2, 1] }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <motion.div
-        className="absolute bottom-20 right-10 w-96 h-96 bg-blue-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30"
-        animate={{ y: [0, 30, 0], x: [0, -20, 0], scale: [1, 1.1, 1] }}
-        transition={{ duration: 10, repeat: Infinity, delay: 0.5, ease: "easeInOut" }}
-      />
-      <motion.div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-purple-200 rounded-full mix-blend-multiply filter blur-3xl opacity-25"
-        animate={{ scale: [1, 1.3, 1], rotate: [0, 180, 360] }}
-        transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-      />
-
-      {/* Content */}
-      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        {/* Welcome Badge */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="inline-block px-5 py-2.5 bg-black/50 backdrop-blur-sm rounded-full border border-white shadow-lg mb-8"
-        >
-          <p className="text-white text-sm font-medium drop-shadow">Welcome to Addis Ababa's Premier Workspace</p>
-        </motion.div>
-
-        {/* Main Title */}
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
-          className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 text-white drop-shadow-xl"
-        >
-          Your Workspace
-        </motion.h1>
-
-        {/* Subtitles */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-xl sm:text-2xl text-white mb-4 font-light drop-shadow"
-        >
-          Book premium working spaces in Addis Ababa by the day or month
-        </motion.p>
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-          className="text-lg text-white mb-8 drop-shadow"
-        >
-          Flexible. Affordable. Professional. Perfect for startups, freelancers, and businesses.
-        </motion.p>
-
-        {/* Buttons */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center mb-12"
-        >
-          <motion.a
-            href="#booking"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="px-8 py-4 bg-blue-600 text-white font-semibold rounded-lg transition-all shadow-lg hover:bg-blue-700"
-          >
-            Book Now
-          </motion.a>
-          <motion.a
-            href="#pricing"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="px-8 py-4 border-2 border-white text-white hover:bg-white hover:text-gray-900 font-semibold rounded-lg transition-all"
-          >
-            View Pricing
-          </motion.a>
-        </motion.div>
-
-        {/* Stats */}
-        <motion.div
-          className="grid grid-cols-3 gap-6 max-w-2xl mx-auto"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
-        >
-          {[ 
-            { value: "50+", label: "Spaces Available" },
-            { value: "1000+", label: "Happy Users" },
-            { value: "24/7", label: "Support" },
-          ].map((stat, i) => (
-            <motion.div 
-              key={i} 
-              whileHover={{ y: -5, scale: 1.05 }} 
-              transition={{ type: "spring", stiffness: 300 }}
-              className="bg-black/50 backdrop-blur-sm rounded-xl p-4 border border-white shadow-lg"
+          <div className="flex flex-wrap gap-4 mb-12">
+            <a 
+              href="#booking"
+              className="px-6 py-2 bg-gradient-to-r from-primary to-accent text-white font-semibold rounded-full hover:shadow-lg transition-shadow text-sm"
             >
-              <p className="text-3xl font-bold text-white drop-shadow">{stat.value}</p>
-              <p className="text-white text-sm mt-1 drop-shadow">{stat.label}</p>
-            </motion.div>
-          ))}
-        </motion.div>
+              Explore Spaces →
+            </a>
+            <a 
+              href="#pricing"
+              className="px-6 py-2 border border-primary text-primary font-semibold rounded-full hover:bg-primary/5 transition-colors text-sm"
+            >
+              View Pricing
+            </a>
+          </div>
+
+          <div className="grid grid-cols-3 gap-6 pt-8 border-t border-border/30">
+            {[
+              { value: '50+', label: 'Spaces' },
+              { value: '1000+', label: 'Members' },
+              { value: '24/7', label: 'Access' },
+            ].map((stat, index) => (
+              <div key={index}>
+                <p className="text-2xl sm:text-3xl font-black bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                  {stat.value}
+                </p>
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mt-1">{stat.label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* RIGHT SECTION */}
+        <div className="hidden lg:flex w-1/2 relative items-center justify-center overflow-visible">
+          
+          <div
+            className="absolute inset-0 bg-gradient-to-br from-primary to-accent"
+            style={{
+              borderRadius: '350px 0 0 350px',
+              transform: 'translateX(40px)', // tightened spacing
+            }}
+          />
+
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <div className="absolute -top-40 -right-40 w-96 h-96 bg-white rounded-full mix-blend-multiply filter blur-3xl opacity-5" />
+            <div className="absolute bottom-10 right-32 w-80 h-80 bg-white rounded-full mix-blend-multiply filter blur-3xl opacity-15" />
+          </div>
+
+          <div className="relative z-10 w-full h-full flex items-center justify-center px-4 gap-4">
+            
+            {/* 2×2 grid */}
+            <div className="grid grid-cols-2 gap-3 flex-shrink-0">
+              <img src={img.src} alt="Office 1" className="w-32 h-32 rounded-2xl shadow-lg border-2 border-white/80 object-cover hover:scale-110 transition-transform duration-300" />
+              <img src={img2.src} alt="Office 2" className="w-32 h-32 rounded-2xl shadow-lg border-2 border-white/80 object-cover hover:scale-110 transition-transform duration-300" />
+              <img src={img3.src} alt="Office 3" className="w-32 h-32 rounded-2xl shadow-lg border-2 border-white/80 object-cover hover:scale-110 transition-transform duration-300" />
+              <img src={img4.src} alt="Office 4" className="w-32 h-32 rounded-2xl shadow-lg border-2 border-white/80 object-cover hover:scale-110 transition-transform duration-300" />
+            </div>
+
+            {/* Tall image */}
+            <div className="flex-shrink-0 h-96 w-64 overflow-hidden rounded-3xl shadow-2xl border-2 border-white/80">
+              <img
+                src={image.src}
+                alt="Premium Coworking Space"
+                className="h-full w-full object-cover animate-fade-in"
+              />
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   )
