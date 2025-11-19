@@ -35,7 +35,7 @@ export default function AdminGallery() {
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Gallery Management</h1>
           <p className="text-gray-600">Manage workspace images and gallery items</p>
         </div>
-        <button className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition shadow-lg shadow-indigo-500/30">
+        <button className="flex items-center gap-2 px-4 py-2 bg-gray-600 text-white rounded-xl hover:bg-gray-700 transition shadow-lg shadow-gray-500/30">
           <Plus className="w-5 h-5" />
           <span className="font-medium">Add Item</span>
         </button>
@@ -45,7 +45,7 @@ export default function AdminGallery() {
         <div className="flex justify-center items-center py-16">
           <div className="text-center">
             <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gray-100 mb-3 animate-spin">
-              <div className="w-8 h-8 border-2 border-gray-200 border-t-indigo-500 rounded-full" />
+              <div className="w-8 h-8 border-2 border-gray-200 border-t-gray-500 rounded-full" />
             </div>
             <p className="text-gray-500">Loading gallery...</p>
           </div>
@@ -68,7 +68,7 @@ export default function AdminGallery() {
               <div className="p-4">
                 <h3 className="font-semibold text-gray-900 mb-2">{item.title}</h3>
                 <div className="flex gap-2">
-                  <button className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-indigo-50 text-indigo-600 rounded-lg hover:bg-indigo-100 transition text-sm font-medium">
+                  <button className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-gray-50 text-gray-600 rounded-lg hover:bg-gray-100 transition text-sm font-medium">
                     <Edit className="w-4 h-4" />
                     Edit
                   </button>

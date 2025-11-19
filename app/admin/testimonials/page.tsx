@@ -40,7 +40,7 @@ export default function AdminTestimonials() {
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Testimonials Management</h1>
           <p className="text-gray-600">Manage customer testimonials and reviews</p>
         </div>
-        <button className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition shadow-lg shadow-indigo-500/30">
+        <button className="flex items-center gap-2 px-4 py-2 bg-gray-600 text-white rounded-xl hover:bg-gray-700 transition shadow-lg shadow-gray-500/30">
           <Plus className="w-5 h-5" />
           <span className="font-medium">Add Testimonial</span>
         </button>
@@ -63,8 +63,8 @@ export default function AdminTestimonials() {
                 </div>
               </div>
               <div className="flex gap-1">
-                <button className="p-2 hover:bg-indigo-50 rounded-lg transition">
-                  <Edit className="w-4 h-4 text-indigo-600" />
+                <button className="p-2 hover:bg-gray-50 rounded-lg transition">
+                  <Edit className="w-4 h-4 text-gray-600" />
                 </button>
                 <button className="p-2 hover:bg-red-50 rounded-lg transition">
                   <Trash2 className="w-4 h-4 text-red-600" />

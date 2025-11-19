@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect } from "react"
 import Link from "next/link"
-import { useRouter, usePathname } from "next/navigation"
-import { LayoutDashboard, Calendar, Settings, LogOut, Menu, X, ChevronRight, Image as ImageIcon, DollarSign, MessageSquare, HelpCircle, Sparkles } from 'lucide-react'
+import { useRouter, usePathname } from 'next/navigation'
+import { LayoutDashboard, Calendar, Settings, LogOut, Menu, X, ChevronRight, ImageIcon, DollarSign, MessageSquare, HelpCircle, Sparkles } from 'lucide-react'
 import { useAuth } from "@/context/auth-context"
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -22,6 +22,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const handleLogout = () => {
     if (window.confirm("Are you sure you want to logout?")) {
       logout()
+      router.push("/login")
     }
   }
 
@@ -82,7 +83,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         {/* Logo Section */}
         <div className="h-20 flex items-center justify-between px-6 border-b border-gray-200/80 bg-white/50 backdrop-blur-sm">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-indigo-600 via-purple-600 to-indigo-700 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/30">
+            <div className="w-12 h-12 bg-gradient-to-br from-gray-600 via-purple-600 to-gray-700 rounded-xl flex items-center justify-center shadow-lg shadow-gray-500/30">
               <LayoutDashboard className="w-6 h-6 text-white" />
             </div>
             <div>
@@ -110,11 +111,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 onClick={() => setIsOpen(false)}
                 className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all group relative ${
                   isActive
-                    ? "bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg shadow-indigo-500/30"
+                    ? "bg-gradient-to-r from-gray-600 to-gray-600 text-white shadow-lg shadow-gray-500/30"
                     : "text-gray-700 hover:text-gray-900 hover:bg-gray-100/80"
                 }`}
               >
-                <Icon className={`w-5 h-5 ${isActive ? "text-white" : "text-gray-600 group-hover:text-indigo-600"}`} />
+                <Icon className={`w-5 h-5 ${isActive ? "text-white" : "text-gray-600 group-hover:text-gray-600"}`} />
                 <span className={`flex-1 font-medium text-sm ${isActive ? "text-white" : ""}`}>{item.label}</span>
                 {isActive && (
                   <div className="absolute right-2 w-1.5 h-1.5 bg-white rounded-full"></div>
@@ -151,9 +152,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <p className="text-xs md:text-sm text-gray-600 hidden sm:block">Manage your workspace content and bookings</p>
           </div>
           <div className="flex items-center gap-3">
-            <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-indigo-50 rounded-lg border border-indigo-100">
+            <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-gray-50 rounded-lg border border-gray-100">
               <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-              <span className="text-xs font-medium text-indigo-700">Admin</span>
+              <span className="text-xs font-medium text-gray-700">Admin</span>
             </div>
             <button
               onClick={() => setIsOpen(!isOpen)}
