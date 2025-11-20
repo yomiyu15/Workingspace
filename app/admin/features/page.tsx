@@ -21,7 +21,7 @@ export default function AdminFeatures() {
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Features Management</h1>
           <p className="text-gray-600">Manage workspace features and benefits</p>
         </div>
-        <button className="flex items-center gap-2 px-4 py-2 bg-gray-600 text-white rounded-xl hover:bg-gray-700 transition shadow-lg shadow-gray-500/30">
+        <button className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition shadow-lg shadow-indigo-500/30">
           <Plus className="w-5 h-5" />
           <span className="font-medium">Add Feature</span>
         </button>
@@ -36,12 +36,12 @@ export default function AdminFeatures() {
             className="bg-white rounded-xl border border-gray-200 p-6 hover:shadow-lg transition"
           >
             <div className="flex items-start justify-between mb-4">
-              <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center">
-                <Sparkles className="w-6 h-6 text-gray-600" />
+              <div className="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center">
+                <Sparkles className="w-6 h-6 text-indigo-600" />
               </div>
               <div className="flex gap-1">
-                <button className="p-2 hover:bg-gray-50 rounded-lg transition">
-                  <Edit className="w-4 h-4 text-gray-600" />
+                <button className="p-2 hover:bg-indigo-50 rounded-lg transition">
+                  <Edit className="w-4 h-4 text-indigo-600" />
                 </button>
                 <button className="p-2 hover:bg-red-50 rounded-lg transition">
                   <Trash2 className="w-4 h-4 text-red-600" />

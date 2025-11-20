@@ -52,7 +52,7 @@ export function Gallery() {
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.2 }}
             className="inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-50 border border-emerald-200 rounded-full mb-6 backdrop-blur-sm"
           >
             <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
@@ -75,7 +75,7 @@ export function Gallery() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.2 }}
+          transition={{ duration: 0.2, delay: 0.1 }}
           className="flex flex-wrap justify-center gap-3 mb-12 md:mb-16"
         >
           {galleryCategories.map((cat) => (
@@ -101,7 +101,7 @@ export function Gallery() {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.3 }}
+          transition={{ duration: 0.2, delay: 0.3 }}
         >
           <AnimatePresence mode="wait">
             {filteredItems.map((item, idx) => (
@@ -112,7 +112,7 @@ export function Gallery() {
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.8, y: 20 }}
                 transition={{
-                  duration: 0.4,
+                  duration: 0.,
                   delay: idx * 0.08,
                   type: "spring",
                   stiffness: 100,

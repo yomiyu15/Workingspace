@@ -31,7 +31,7 @@ export function Hero() {
               href="#booking"
               className="px-6 py-2 bg-gradient-to-r from-primary to-accent text-white font-semibold rounded-full hover:shadow-lg transition-shadow text-sm"
             >
-              Explore Spaces →
+             Book WorkSpaces →
             </a>
             <a 
               href="#pricing"

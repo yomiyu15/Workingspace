@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { Calendar, Search, Filter } from "lucide-react"
+import { Table } from "@/components/ui/table"
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api"
 
@@ -14,6 +15,7 @@ interface Booking {
   start_date: string
   end_date: string
   total_price: number
+  status: string
 }
 
 export default function AdminBookings() {
@@ -22,30 +24,47 @@ export default function AdminBookings() {
   const [error, setError] = useState<string | null>(null)
   const [searchTerm, setSearchTerm] = useState("")
 
-  useEffect(() => {
-    const fetchBookings = async () => {
-      try {
-        const token = localStorage.getItem("token")
-        const res = await fetch(`${API_BASE}/bookings`, {
-          headers: token ? { Authorization: `Bearer ${token}` } : undefined,
-        })
-
-        if (!res.ok) {
-          throw new Error(`HTTP error! status: ${res.status}`)
-        }
-
-        const data = await res.json()
-        setBookings(Array.isArray(data) ? data : data.bookings || [])
-      } catch (err: any) {
-        console.error("Failed to fetch bookings:", err)
-        setError(err.message || "Failed to fetch bookings")
-      } finally {
-        setLoading(false)
-      }
+  const fetchBookings = async () => {
+    setLoading(true)
+    setError(null)
+    try {
+      const token = localStorage.getItem("token")
+      const res = await fetch(`${API_BASE}/bookings`, {
+        headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+      })
+      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`)
+      const data = await res.json()
+      setBookings(Array.isArray(data) ? data : data.bookings || [])
+    } catch (err: any) {
+      console.error("Failed to fetch bookings:", err)
+      setError(err.message || "Failed to fetch bookings")
+    } finally {
+      setLoading(false)
     }
+  }
 
+  useEffect(() => {
     fetchBookings()
   }, [])
+
+  const handleStatusChange = async (id: number, newStatus: string) => {
+    try {
+      const token = localStorage.getItem("token")
+      const res = await fetch(`${API_BASE}/bookings/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({ status: newStatus }),
+      })
+      const result = await res.json()
+      if (!res.ok) throw new Error(result.message || "Failed to update booking")
+      fetchBookings()
+    } catch (err: any) {
+      alert(err.message || "Error updating booking")
+    }
+  }
 
   const filteredBookings = bookings.filter((booking) => {
     return (
@@ -121,6 +140,8 @@ export default function AdminBookings() {
                   <th className="px-4 py-2 text-left font-medium text-gray-700">Space</th>
                   <th className="px-4 py-2 text-left font-medium text-gray-700">Dates</th>
                   <th className="px-4 py-2 text-left font-medium text-gray-700">Amount</th>
+                  <th className="px-4 py-2 text-left font-medium text-gray-700">Status</th>
+                  <th className="px-4 py-2 text-left font-medium text-gray-700">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -134,6 +155,33 @@ export default function AdminBookings() {
                       {new Date(booking.start_date).toLocaleDateString()} - {new Date(booking.end_date).toLocaleDateString()}
                     </td>
                     <td className="px-4 py-2 font-semibold text-gray-900">${booking.total_price}</td>
+                    <td className="px-4 py-2 font-medium">
+                      <span className={`px-2 py-1 rounded-full text-xs ${
+                        booking.status === "pending" ? "bg-yellow-100 text-yellow-800" :
+                        booking.status === "confirmed" ? "bg-green-100 text-green-800" :
+                        "bg-red-100 text-red-800"
+                      }`}>
+                        {booking.status}
+                      </span>
+                    </td>
+                    <td className="px-4 py-2 flex gap-2">
+                      {booking.status !== "confirmed" && (
+                        <button
+                          className="px-2 py-1 bg-green-500 text-white rounded text-xs hover:bg-green-600"
+                          onClick={() => handleStatusChange(booking.id, "confirmed")}
+                        >
+                          Confirm
+                        </button>
+                      )}
+                      {booking.status !== "canceled" && (
+                        <button
+                          className="px-2 py-1 bg-red-500 text-white rounded text-xs hover:bg-red-600"
+                          onClick={() => handleStatusChange(booking.id, "canceled")}
+                        >
+                          Cancel
+                        </button>
+                      )}
+                    </td>
                   </tr>
                 ))}
               </tbody>

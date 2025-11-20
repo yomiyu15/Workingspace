@@ -49,9 +49,9 @@ export function Booking() {
   }, [isOpen])
 
   const spaces = {
-    standard: { name: "Standard Desk", price: 150, availability: 5 },
-    premium: { name: "Premium Desk", price: 200, availability: 2 },
-    meeting: { name: "Meeting Room", price: 500, availability: 1 },
+    standard: { name: "Standard Desk", price: 1500, availability: 5 },
+    premium: { name: "Premium Desk", price: 2000, availability: 2 },
+    meeting: { name: "Meeting Room", price: 5000, availability: 1 },
   }
 
   const isSingleDay = duration === "day"
