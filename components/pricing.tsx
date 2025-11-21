@@ -14,8 +14,7 @@ export function Pricing() {
         "Comfortable Desk & Chair",
         "Coffee, Tea & Water",
         "Free Parking",
-        "No Contract Required",
-        "Access 7 AM - 6 PM",
+     
       ],
     },
     {
@@ -28,8 +27,7 @@ export function Pricing() {
         "Priority Desk Selection",
         "Lounge & Rest Area Access",
         "2 Free Meeting Hours/Week",
-        "Mail & Package Service",
-        "Extended Hours (7 AM - 8 PM)",
+     
       ],
       popular: true,
     },
@@ -43,9 +41,7 @@ export function Pricing() {
         "Dedicated Desk Option",
         "Unlimited Meeting Rooms",
         "Private Locker Storage",
-        "Printing Allowance (100 pages)",
-        "24/7 Access",
-        "Networking Events Access",
+       
       ],
     },
   ]
@@ -96,16 +92,18 @@ export function Pricing() {
                       <span className="text-xs text-muted-foreground">ETB</span>
                       <span className="text-xs text-muted-foreground">{plan.period}</span>
                     </div>
+<a
+  href="/#booking"
+  className={`w-full py-3 rounded-lg font-bold mb-6 text-sm text-center inline-block transition-all duration-300 hover:scale-105 hover:-translate-y-0.5 ${
+    plan.popular
+      ? "bg-gradient-to-r from-accent to-primary text-primary-foreground hover:shadow-lg"
+      : "border-2 border-accent/40 text-accent hover:bg-accent/10 hover:border-accent/60"
+  }`}
+>
+  Book Now
+</a>
 
-                    <button
-                      className={`w-full py-3 rounded-lg font-bold mb-6 text-sm transition-all duration-300 hover:scale-105 hover:-translate-y-0.5 ${
-                        plan.popular
-                          ? "bg-gradient-to-r from-accent to-primary text-primary-foreground hover:shadow-lg"
-                          : "border-2 border-accent/40 text-accent hover:bg-accent/10 hover:border-accent/60"
-                      }`}
-                    >
-                      Book Now
-                    </button>
+
 
                     {/* Features list */}
                     <div className="space-y-3 flex-1">

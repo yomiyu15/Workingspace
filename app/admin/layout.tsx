@@ -32,6 +32,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const menuItems = [
     { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
     { label: "Bookings", href: "/admin/booking", icon: Calendar },
+    { label: "Spaces", href: "/admin/spaces", icon: ImageIcon },
     { label: "Services", href: "/admin/services", icon: Settings },
     { label: "Gallery", href: "/admin/gallery", icon: ImageIcon },
     { label: "Pricing", href: "/admin/pricing", icon: DollarSign },

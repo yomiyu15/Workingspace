@@ -7,7 +7,7 @@ import image from "../assets/alesia-kazantceva-VWcPlbHglYc-unsplash.jpg"
 
 export function Hero() {
   return (
-    <section className="relative w-full min-h-screen bg-white overflow-hidden">
+    <section className="relative w-full min-50vh-screen bg-white overflow-hidden">
       <div className="relative w-full h-full flex items-stretch">
         
         {/* LEFT SECTION */}
