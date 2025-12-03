@@ -1,100 +1,163 @@
 "use client"
-import { createContext, ReactNode, useContext, useState, useEffect } from "react";
+
+import { createContext, useContext, useEffect, useMemo, useRef, useState } from "react"
+
+import apiClient from "@/lib/api-client"
+import { SESSION_HEARTBEAT_MS, SESSION_TIMEOUT_MS } from "@/lib/config"
+import { useToast } from "@/hooks/use-toast"
 
 interface User {
-  id: number;
-  username: string;
-  role: string;
-  name?: string;
+  id: number
+  username: string
+  role: string
+  name?: string
 }
 
 interface AuthContextType {
-  user: User | null;
-  isAuthenticated: boolean;
-  login: (username: string, password: string) => Promise<void>;
-  logout: () => void;
+  user: User | null
+  isAuthenticated: boolean
+  isBootstrapped: boolean
+  login: (username: string, password: string) => Promise<void>
+  logout: (options?: { silent?: boolean }) => void
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
-const SESSION_TIMEOUT = 3 * 60 * 1000; // 3 minutes
+const USER_KEY = "user"
+const TOKEN_KEY = "token"
+const LAST_ACTIVE_KEY = "lastActive"
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User | null>(null)
+  const [isBootstrapped, setIsBootstrapped] = useState(false)
+  const sessionTimerRef = useRef<NodeJS.Timeout | null>(null)
+  const { toast } = useToast()
 
-  // Restore user & check session timeout
+  const clearSession = () => {
+    localStorage.removeItem(TOKEN_KEY)
+    localStorage.removeItem(USER_KEY)
+    localStorage.removeItem(LAST_ACTIVE_KEY)
+    setUser(null)
+  }
+
+  const logout = ({ silent }: { silent?: boolean } = {}) => {
+    clearSession()
+    if (!silent) {
+      toast({
+        title: "Signed out",
+        description: "You have been securely logged out.",
+      })
+    }
+    if (typeof window !== "undefined") {
+      window.location.href = "/login"
+    }
+  }
+
+  const hydrateUser = () => {
+    const storedUser = localStorage.getItem(USER_KEY)
+    const lastActive = Number(localStorage.getItem(LAST_ACTIVE_KEY) || "0")
+    const now = Date.now()
+
+    if (storedUser && now - lastActive <= SESSION_TIMEOUT_MS) {
+      setUser(JSON.parse(storedUser))
+      localStorage.setItem(LAST_ACTIVE_KEY, now.toString())
+    } else if (storedUser) {
+      logout({ silent: true })
+      toast({
+        title: "Session expired",
+        description: "Please log in again to continue.",
+        variant: "destructive",
+      })
+    }
+    setIsBootstrapped(true)
+  }
+
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    const lastActive = Number(localStorage.getItem("lastActive") || "0");
-    const now = Date.now();
+    hydrateUser()
+  }, [])
 
-    if (storedUser) {
-      if (now - lastActive <= SESSION_TIMEOUT) {
-        setUser(JSON.parse(storedUser));
-        localStorage.setItem("lastActive", now.toString());
-      } else {
-        logout();
+  useEffect(() => {
+    if (!user) return
+
+    const handleActivity = () => {
+      localStorage.setItem(LAST_ACTIVE_KEY, Date.now().toString())
+    }
+
+    window.addEventListener("click", handleActivity)
+    window.addEventListener("keydown", handleActivity)
+
+    return () => {
+      window.removeEventListener("click", handleActivity)
+      window.removeEventListener("keydown", handleActivity)
+    }
+  }, [user])
+
+  useEffect(() => {
+    if (!user) {
+      if (sessionTimerRef.current) {
+        clearInterval(sessionTimerRef.current)
+        sessionTimerRef.current = null
+      }
+      return
+    }
+
+    sessionTimerRef.current = setInterval(() => {
+      const lastActive = Number(localStorage.getItem(LAST_ACTIVE_KEY) || "0")
+      const now = Date.now()
+      if (now - lastActive > SESSION_TIMEOUT_MS) {
+        logout({ silent: true })
+        toast({
+          title: "Session expired",
+          description: "You were logged out after being inactive.",
+          variant: "destructive",
+        })
+      }
+    }, SESSION_HEARTBEAT_MS)
+
+    return () => {
+      if (sessionTimerRef.current) {
+        clearInterval(sessionTimerRef.current)
+        sessionTimerRef.current = null
       }
     }
-  }, []);
+  }, [user, toast])
 
   const login = async (username: string, password: string) => {
-    const res = await fetch("http://localhost:5000/api/admin/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password }),
-    });
-    if (!res.ok) throw new Error((await res.json()).message || "Login failed");
+    const { data } = await apiClient.post("/admin/login", { username, password })
 
-    const data = await res.json();
-
-    const userData = {
+    const userData: User = {
       id: data.id,
       username: data.username,
       role: data.role,
       name: data.name,
-    };
-
-    setUser(userData);
-    localStorage.setItem("user", JSON.stringify(userData));
-    localStorage.setItem("token", data.token);
-    localStorage.setItem("lastActive", Date.now().toString());
-  };
-
-  const logout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    localStorage.removeItem("lastActive");
-    setUser(null);
-    if (typeof window !== "undefined") {
-      window.location.href = "/login";
     }
-  };
 
-  // Update lastActive on every user interaction
-  useEffect(() => {
-    const updateActivity = () => {
-      if (user) localStorage.setItem("lastActive", Date.now().toString());
-    };
+    setUser(userData)
+    localStorage.setItem(USER_KEY, JSON.stringify(userData))
+    localStorage.setItem(TOKEN_KEY, data.token)
+    localStorage.setItem(LAST_ACTIVE_KEY, Date.now().toString())
+    toast({
+      title: "Welcome back",
+      description: "You are logged in to the admin dashboard.",
+    })
+  }
 
-    window.addEventListener("click", updateActivity);
-    window.addEventListener("keydown", updateActivity);
+  const value = useMemo(
+    () => ({
+      user,
+      isAuthenticated: !!user,
+      isBootstrapped,
+      login,
+      logout,
+    }),
+    [user, isBootstrapped],
+  )
 
-    return () => {
-      window.removeEventListener("click", updateActivity);
-      window.removeEventListener("keydown", updateActivity);
-    };
-  }, [user]);
-
-  return (
-    <AuthContext.Provider value={{ user, isAuthenticated: !!user, login, logout }}>
-      {children}
-    </AuthContext.Provider>
-  );
-};
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
+}
 
 export const useAuth = () => {
-  const ctx = useContext(AuthContext);
-  if (!ctx) throw new Error("useAuth must be used inside AuthProvider");
-  return ctx;
-};
+  const ctx = useContext(AuthContext)
+  if (!ctx) throw new Error("useAuth must be used inside AuthProvider")
+  return ctx
+}

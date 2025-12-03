@@ -1,34 +1,73 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
-import { Star } from "lucide-react"
+import { BadgeCheck, ExternalLink, Star } from "lucide-react"
+
 import { AnimatedStagger, AnimatedItem } from "./animation-wrapper"
+import { API_BASE_URL } from "@/lib/config"
+
+type Testimonial = {
+  name: string
+  role: string
+  company?: string
+  text: string
+  rating: number
+  image?: string
+  verified?: boolean
+  source_url?: string
+}
+
+const resolveImageUrl = (image?: string) => {
+  if (!image) return "/placeholder-user.jpg"
+  if (/^https?:\/\//i.test(image)) return image
+  const apiRoot = API_BASE_URL?.replace(/\/api$/, "") || ""
+  const base = apiRoot.replace(/\/+$/, "")
+  const path = image.startsWith("/") ? image : `/${image}`
+  return `${base}${path}`
+}
 
 export function Testimonials() {
-  const testimonials = [
-    {
-      name: "Abebe Mengistu",
-      role: "Startup Founder",
-      company: "TechStart Ethiopia",
-      text: "WorkSpace Hub has been perfect for our growing team. Great amenities and very affordable!",
-      rating: 5,
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop",
-    },
-    {
-      name: "Hiwot Tadesse",
-      role: "Freelance Designer",
-      text: "The WiFi is fast, the environment is professional, and the staff is incredibly helpful.",
-      rating: 5,
-      image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop",
-    },
-    {
-      name: "Melkamu Desta",
-      role: "Business Consultant",
-      text: "Excellent workspace with professional infrastructure. I've been using it for 3 months and very satisfied.",
-      rating: 5,
-      image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop",
-    },
-  ]
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    const controller = new AbortController()
+    const load = async () => {
+      setLoading(true)
+      setError(null)
+      try {
+        const res = await fetch(`${API_BASE_URL}/testimonials`, { signal: controller.signal })
+        if (!res.ok) throw new Error("Failed to load testimonials")
+        const data = await res.json()
+        if (!controller.signal.aborted && Array.isArray(data)) {
+          setTestimonials(
+            data.map((item: any) => ({
+              name: item.name,
+              role: item.role,
+              company: item.company,
+              text: item.text,
+              rating: Number(item.rating) || 5,
+              image: item.image,
+              verified: item.verified !== false,
+              source_url: item.source_url || item.profile_url || null,
+            })),
+          )
+        }
+      } catch (err) {
+        if ((err as Error).name === "AbortError") return
+        console.error("Failed to fetch testimonials:", err)
+        setError("Unable to load testimonials right now.")
+      } finally {
+        if (!controller.signal.aborted) {
+          setLoading(false)
+        }
+      }
+    }
+    load()
+    return () => controller.abort()
+  }, [])
 
   return (
     <section className="py-16 px-4 bg-background">
@@ -45,57 +84,92 @@ export function Testimonials() {
           </p>
         </motion.div>
 
-        <AnimatedStagger className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {testimonials.map((testimonial, index) => (
-            <AnimatedItem key={index}>
-              <motion.div
-                whileHover={{ y: -8, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1)" }}
-                transition={{ type: "spring", stiffness: 300 }}
-                className="p-6 bg-white rounded-lg border border-border shadow-md hover:shadow-lg transition"
-              >
-                <div className="flex items-center gap-4 mb-4">
-                  <motion.img
-                    src={testimonial.image || "/placeholder.svg"}
-                    alt={testimonial.name}
-                    className="w-12 h-12 rounded-full object-cover"
-                    whileHover={{ scale: 1.1 }}
-                  />
-                  <div>
-                    <p className="font-semibold text-slate-900">{testimonial.name}</p>
-                    <p className="text-xs text-muted-foreground">{testimonial.role}</p>
-                    {testimonial.company && <p className="text-xs text-blue-600 font-medium">{testimonial.company}</p>}
-                  </div>
-                </div>
+        {loading && (
+          <div className="text-center text-sm text-muted-foreground py-10">Loading testimonials…</div>
+        )}
+
+        {!loading && error && (
+          <div className="text-center text-sm text-red-600 bg-red-50 border border-red-100 rounded-xl py-4">
+            {error}
+          </div>
+        )}
+
+        {!loading && !error && testimonials.length === 0 && (
+          <div className="text-center text-sm text-muted-foreground bg-muted/20 border border-muted rounded-xl py-6">
+            No testimonials have been published yet. Please add some from the admin dashboard.
+          </div>
+        )}
+
+        {!loading && testimonials.length > 0 && (
+          <AnimatedStagger className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {testimonials.map((testimonial, index) => (
+              <AnimatedItem key={`${testimonial.name}-${index}`}>
                 <motion.div
-                  className="flex gap-1 mb-3"
-                  variants={{
-                    hidden: { opacity: 0 },
-                    visible: {
-                      opacity: 1,
-                      transition: { staggerChildren: 0.1 },
-                    },
-                  }}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
+                  whileHover={{ y: -8, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1)" }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                  className="p-6 bg-white rounded-lg border border-border shadow-md hover:shadow-lg transition"
                 >
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <motion.div
-                      key={i}
-                      variants={{
-                        hidden: { scale: 0 },
-                        visible: { scale: 1 },
-                      }}
+                  <div className="flex items-center gap-4 mb-4">
+                    <motion.img
+                      src={resolveImageUrl(testimonial.image)}
+                      alt={testimonial.name}
+                      className="w-12 h-12 rounded-full object-cover"
+                      whileHover={{ scale: 1.1 }}
+                    />
+                    <div>
+                      <p className="font-semibold text-slate-900">{testimonial.name}</p>
+                      <p className="text-xs text-muted-foreground">{testimonial.role}</p>
+                      {testimonial.company && (
+                        <p className="text-xs text-blue-600 font-medium">{testimonial.company}</p>
+                      )}
+                      {testimonial.verified && (
+                        <p className="mt-1 inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600">
+                          <BadgeCheck className="w-3 h-3" /> Verified Member
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                  <motion.div
+                    className="flex gap-1 mb-3"
+                    variants={{
+                      hidden: { opacity: 0 },
+                      visible: {
+                        opacity: 1,
+                        transition: { staggerChildren: 0.1 },
+                      },
+                    }}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true }}
+                  >
+                    {Array.from({ length: Math.max(1, Math.min(5, testimonial.rating)) }).map((_, i) => (
+                      <motion.div
+                        key={i}
+                        variants={{
+                          hidden: { scale: 0 },
+                          visible: { scale: 1 },
+                        }}
+                      >
+                        <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                      </motion.div>
+                    ))}
+                  </motion.div>
+                  <p className="text-sm text-muted-foreground italic">"{testimonial.text}"</p>
+                  {testimonial.source_url && (
+                    <a
+                      href={testimonial.source_url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-slate-500 hover:text-slate-900 transition"
                     >
-                      <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                    </motion.div>
-                  ))}
+                      View profile <ExternalLink className="w-3 h-3" />
+                    </a>
+                  )}
                 </motion.div>
-                <p className="text-sm text-muted-foreground italic">"{testimonial.text}"</p>
-              </motion.div>
-            </AnimatedItem>
-          ))}
-        </AnimatedStagger>
+              </AnimatedItem>
+            ))}
+          </AnimatedStagger>
+        )}
       </div>
     </section>
   )

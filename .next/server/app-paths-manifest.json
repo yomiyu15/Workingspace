@@ -1,9 +1,5 @@
 {
-  "/login/page": "app/login/page.js",
   "/page": "app/page.js",
-  "/admin/spaces/page": "app/admin/spaces/page.js",
   "/admin/booking/page": "app/admin/booking/page.js",
-  "/admin/gallery/page": "app/admin/gallery/page.js",
-  "/admin/pricing/page": "app/admin/pricing/page.js",
-  "/admin/testimonials/page": "app/admin/testimonials/page.js"
+  "/admin/spaces/page": "app/admin/spaces/page.js"
 }

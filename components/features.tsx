@@ -1,42 +1,86 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
-import { CheckCircle2, Clock, Users, MapPin, Wifi, Shield } from "lucide-react"
+import * as LucideIcons from "lucide-react"
+import type { LucideIcon } from "lucide-react"
+
 import { AnimatedStagger, AnimatedItem } from "./animation-wrapper"
+import { API_BASE_URL } from "@/lib/config"
+
+type FeatureItem = {
+  title: string
+  description: string
+  icon?: string
+}
+
+const LOCAL_FEATURES: FeatureItem[] = [
+  {
+    icon: "Clock",
+    title: "Flexible Booking",
+    description: "Book for a day, week, or month. No long-term contracts needed.",
+  },
+  {
+    icon: "MapPin",
+    title: "Prime Locations",
+    description: "Strategic locations across Addis Ababa. Easy access via public transport.",
+  },
+  {
+    icon: "Users",
+    title: "Professional Community",
+    description: "Network with entrepreneurs, freelancers, and business professionals.",
+  },
+  {
+    icon: "CheckCircle2",
+    title: "Verified Spaces",
+    description: "All spaces inspected and equipped with essential modern facilities.",
+  },
+  {
+    icon: "Wifi",
+    title: "High-Speed Internet",
+    description: "Reliable WiFi connectivity with backup for uninterrupted work.",
+  },
+  {
+    icon: "Shield",
+    title: "Secure & Safe",
+    description: "24/7 security, lockers, and professional management for peace of mind.",
+  },
+]
+
+const resolveIcon = (name?: string): LucideIcon => {
+  if (name && (LucideIcons as Record<string, LucideIcon>)[name]) {
+    return (LucideIcons as Record<string, LucideIcon>)[name]
+  }
+  return LucideIcons.Sparkles
+}
 
 export function Features() {
-  const features = [
-    {
-      icon: Clock,
-      title: "Flexible Booking",
-      description: "Book for a day, week, or month. No long-term contracts needed.",
-    },
-    {
-      icon: MapPin,
-      title: "Prime Locations",
-      description: "Strategic locations across Addis Ababa. Easy access via public transport.",
-    },
-    {
-      icon: Users,
-      title: "Professional Community",
-      description: "Network with entrepreneurs, freelancers, and business professionals.",
-    },
-    {
-      icon: CheckCircle2,
-      title: "Verified Spaces",
-      description: "All spaces inspected and equipped with essential modern facilities.",
-    },
-    {
-      icon: Wifi,
-      title: "High-Speed Internet",
-      description: "Reliable WiFi connectivity with backup for uninterrupted work.",
-    },
-    {
-      icon: Shield,
-      title: "Secure & Safe",
-      description: "24/7 security, lockers, and professional management for peace of mind.",
-    },
-  ]
+  const [features, setFeatures] = useState<FeatureItem[]>(LOCAL_FEATURES)
+
+  useEffect(() => {
+    const controller = new AbortController()
+    const load = async () => {
+      try {
+        const res = await fetch(`${API_BASE_URL}/features`, { signal: controller.signal })
+        if (!res.ok) throw new Error("Failed to load features")
+        const data = await res.json()
+        if (!controller.signal.aborted && Array.isArray(data) && data.length) {
+          setFeatures(
+            data.map((item: FeatureItem) => ({
+              title: item.title,
+              description: item.description,
+              icon: item.icon,
+            })),
+          )
+        }
+      } catch (err) {
+        if ((err as Error).name === "AbortError") return
+        console.error("Failed to fetch features:", err)
+      }
+    }
+    load()
+    return () => controller.abort()
+  }, [])
 
   return (
     <section className="py-16 px-4 bg-background">
@@ -55,9 +99,9 @@ export function Features() {
 
         <AnimatedStagger className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {features.map((feature, index) => {
-            const Icon = feature.icon
+            const Icon = resolveIcon(feature.icon)
             return (
-              <AnimatedItem key={index}>
+              <AnimatedItem key={`${feature.title}-${index}`}>
                 <motion.div
                   whileHover={{ y: -8, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1)" }}
                   transition={{ type: "spring", stiffness: 300 }}

@@ -8,12 +8,14 @@ import { Booking } from "@/components/booking"
 import { FAQ } from "@/components/faq"
 import { Testimonials } from "@/components/testimonials"
 import { Footer } from "@/components/footer"
+import { TrustSignals } from "@/components/trust-signals"
 
 export default function Home() {
   return (
     <main>
       <Navbar />
       <Hero />
+     
       <Gallery />
       <Features />
       <Pricing />
@@ -21,6 +23,7 @@ export default function Home() {
       <Booking />
       <FAQ />
       <Testimonials />
+      <TrustSignals />
       <Footer />
     </main>
   )

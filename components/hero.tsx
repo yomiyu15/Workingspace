@@ -22,8 +22,11 @@ export function Hero() {
             </h1>
           </div>
 
-          <p className="text-sm sm:text-base text-muted-foreground leading-relaxed max-w-xl mb-8">
+          <p className="text-sm sm:text-base text-muted-foreground leading-relaxed max-w-xl">
             Discover premium coworking spaces designed for professionals. Book flexible day passes or monthly plans with world-class amenities and vibrant community.
+          </p>
+          <p className="text-sm sm:text-base text-muted-foreground leading-relaxed max-w-xl mb-8">
+            Every plan includes concierge-style support, on-site tech help, and curated events so your team can focus on meaningful work while we handle the details.
           </p>
 
           <div className="flex flex-wrap gap-4 mb-12">
