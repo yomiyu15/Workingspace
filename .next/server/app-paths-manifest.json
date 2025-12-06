@@ -1,5 +1,8 @@
 {
+  "/contactus/page": "app/contactus/page.js",
   "/page": "app/page.js",
-  "/admin/booking/page": "app/admin/booking/page.js",
-  "/admin/spaces/page": "app/admin/spaces/page.js"
+  "/login/page": "app/login/page.js",
+  "/booking/page": "app/booking/page.js",
+  "/admin/spaces/page": "app/admin/spaces/page.js",
+  "/admin/category/page": "app/admin/category/page.js"
 }

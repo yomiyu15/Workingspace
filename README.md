@@ -1,16 +1,18 @@
-# WorkSpace Hub
+# Thrive Coworking Space
 
 A modern workspace booking platform for Addis Ababa.
 
 ## How to Run
 
 ### Prerequisites
+
 - Node.js (v18 or higher)
 - npm or yarn or pnpm
 
 ### Installation
 
 1. Install dependencies:
+
 ```bash
 npm install
 # or
@@ -20,6 +22,7 @@ pnpm install
 ```
 
 2. Start the development server:
+
 ```bash
 npm run dev
 # or
@@ -29,6 +32,7 @@ pnpm dev
 ```
 
 3. Open your browser and navigate to:
+
 ```
 http://localhost:3000
 ```
@@ -63,4 +67,3 @@ npm start
 - Tailwind CSS
 - Framer Motion
 - Lucide Icons
-

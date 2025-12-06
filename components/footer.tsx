@@ -7,7 +7,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           {/* Company Info */}
           <div>
-            <h3 className="text-2xl font-bold mb-4">WorkSpace Hub</h3>
+            <h3 className="text-2xl font-bold mb-4">Thrive Coworking Space</h3>
             <p className="text-slate-300">Your trusted platform for flexible workspace solutions in Addis Ababa.</p>
             <p className="text-slate-400 text-sm mt-3">Making premium workspaces accessible to everyone.</p>
           </div>
@@ -54,7 +54,7 @@ export function Footer() {
               <div className="flex items-start gap-2">
                 <MapPin className="w-4 h-4 flex-shrink-0 mt-0.5" />
                 <span className="text-sm">
-                  Multiple Locations
+              Our Location
                   <br />
                   Addis Ababa, Ethiopia
                 </span>
@@ -84,7 +84,7 @@ export function Footer() {
 
         <div className="border-t border-slate-700 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center text-slate-300 text-sm">
-            <p>&copy; 2025 WorkSpace Hub Ethiopia. All rights reserved.</p>
+            <p>&copy; 2025 Thrive Coworking Space Ethiopia. All rights reserved.</p>
             <div className="flex gap-6 mt-4 md:mt-0">
               <a href="#" className="hover:text-white transition text-sm">
                 Privacy Policy

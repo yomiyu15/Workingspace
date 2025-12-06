@@ -1,14 +1,14 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { motion } from "framer-motion"
-import { Menu, X, LogOut } from "lucide-react"
-import Link from "next/link"
-import { useAuth } from "@/context/auth-context"
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { Menu, X, LogOut } from "lucide-react";
+import Link from "next/link";
+import { useAuth } from "@/context/auth-context";
 
 export function Navbar() {
-  const [isOpen, setIsOpen] = useState(false)
-  const { user, logout, isAuthenticated } = useAuth()
+  const [isOpen, setIsOpen] = useState(false);
+  const { user, logout, isAuthenticated } = useAuth();
 
   return (
     <motion.nav
@@ -28,7 +28,9 @@ export function Navbar() {
                 <span className="text-white font-bold text-lg">W</span>
               </div>
               <div>
-                <span className="font-bold text-lg text-gray-800">WorkSpace Hub</span>
+                <span className="font-bold text-lg text-gray-800">
+                  Thrive Coworking Space
+                </span>
                 <p className="text-xs text-gray-500">Addis Ababa</p>
               </div>
             </Link>
@@ -46,6 +48,14 @@ export function Navbar() {
                 {item}
               </motion.a>
             ))}
+
+            {/* 🔥 Highlighted Contact Button */}
+            <Link
+              href="/contactus"
+              className="px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 font-semibold text-sm hover:scale-105"
+            >
+              Contact Us
+            </Link>
           </div>
 
           {/* Auth Buttons */}
@@ -53,10 +63,16 @@ export function Navbar() {
             {isAuthenticated && user ? (
               <div className="flex items-center gap-4">
                 <div className="text-right hidden sm:block">
-                  <p className="text-sm font-semibold text-gray-800">{user.name}</p>
+                  <p className="text-sm font-semibold text-gray-800">
+                    {user.name}
+                  </p>
                   <p className="text-xs text-gray-500">{user.role}</p>
                 </div>
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
                   <Link
                     href={user.role === "admin" ? "/admin" : "/bookings"}
                     className="px-4 py-2 bg-cyan-500 text-white rounded-lg hover:bg-cyan-600 transition font-semibold text-sm"
@@ -64,6 +80,7 @@ export function Navbar() {
                     {user.role === "admin" ? "Admin Panel" : "My Bookings"}
                   </Link>
                 </motion.div>
+
                 <motion.button
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
@@ -83,7 +100,11 @@ export function Navbar() {
               whileTap={{ scale: 0.95 }}
               className="md:hidden p-2"
             >
-              {isOpen ? <X className="w-6 h-6 text-gray-800" /> : <Menu className="w-6 h-6 text-gray-800" />}
+              {isOpen ? (
+                <X className="w-6 h-6 text-gray-800" />
+              ) : (
+                <Menu className="w-6 h-6 text-gray-800" />
+              )}
             </motion.button>
           </div>
         </div>
@@ -106,6 +127,15 @@ export function Navbar() {
                 {item}
               </motion.a>
             ))}
+
+            {/* 🔥 Mobile Contact Button */}
+            <Link
+              href="/contactus"
+              className="block w-full text-center px-4 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-lg font-semibold shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105"
+            >
+              Contact Us
+            </Link>
+
             {isAuthenticated && (
               <motion.button
                 onClick={logout}
@@ -119,5 +149,5 @@ export function Navbar() {
         )}
       </div>
     </motion.nav>
-  )
+  );
 }

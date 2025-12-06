@@ -80,7 +80,7 @@ export function Testimonials() {
         >
           <h2 className="text-4xl font-bold text-center mb-4 text-balance">What Our Users Say</h2>
           <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
-            Join hundreds of professionals who trust WorkSpace Hub in Addis Ababa
+            Join hundreds of professionals who trust Thrive Coworking Space in Addis Ababa
           </p>
         </motion.div>
 

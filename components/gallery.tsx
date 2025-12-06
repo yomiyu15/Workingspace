@@ -165,7 +165,7 @@ const workspaceToGalleryItem = (workspace: Workspace): GalleryItem => {
     title: workspace.name,
     description: workspace.description || "Flexible workspace tailored to ambitious teams.",
     image: mainImage,
-    location: [workspace.locationName, workspace.locationCity].filter(Boolean).join(", ") || "WorkSpace Hub",
+    location: [workspace.locationName, workspace.locationCity].filter(Boolean).join(", ") || "Thrive Coworking Space",
     capacity: workspace.capacity ? `Up to ${workspace.capacity} people` : "Flexible capacity",
     availability: workspace.leadTime || "Available now",
     rating: workspace.rating || 4.8,

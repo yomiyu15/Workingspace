@@ -51,6 +51,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
       { label: "Bookings", href: "/admin/booking", icon: Calendar },
       { label: "Spaces", href: "/admin/spaces", icon: ImageIcon },
+            { label: "Categories", href: "/admin/category", icon: ImageIcon },
       { label: "Gallery", href: "/admin/gallery", icon: ImageIcon },
       { label: "Pricing", href: "/admin/pricing", icon: DollarSign },
       { label: "Features", href: "/admin/features", icon: Sparkles },
@@ -93,7 +94,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       >
         <div className="flex h-20 items-center justify-between border-b border-slate-100 px-6">
           <div>
-            <p className="text-xs uppercase tracking-[0.35em] text-slate-400">Workspace Hub</p>
+            <p className="text-xs uppercase tracking-[0.35em] text-slate-400">Thrive Coworking Space</p>
             <p className="text-lg font-semibold text-slate-900">Admin Suite</p>
           </div>
           <button

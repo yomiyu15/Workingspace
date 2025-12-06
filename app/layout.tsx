@@ -10,7 +10,7 @@ import "./globals.css"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "WorkSpace Hub Addis - ስፋተ ስራ | Flexible Coworking Spaces",
+  title: "Thrive Coworking Space Addis - ስፋተ ስራ | Flexible Coworking Spaces",
   description:
     "Book premium working spaces in Addis Ababa by the day or month. ሁሉም ለእርስዎ ፈጣን የስራ ቦታ አገናጅ። Find the perfect workspace in Addis Ababa for your productivity needs.",
   generator: "v0.app",

@@ -67,6 +67,31 @@ export default function AdminSpaces() {
   const [submitting, setSubmitting] = useState(false)
   const [uploadingImage, setUploadingImage] = useState(false)
   const [uploadError, setUploadError] = useState<string | null>(null)
+  // Add at the top with other state hooks
+const [categories, setCategories] = useState<{ id: number; name: string }[]>([])
+
+// Fetch categories
+const fetchCategories = async () => {
+  try {
+    const token = localStorage.getItem("token")
+    const res = await fetch(`${API_BASE_URL}/categories`, {
+      headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+    })
+    if (!res.ok) throw new Error("Failed to fetch categories")
+    const data = await res.json()
+    setCategories(Array.isArray(data) ? data : [])
+  } catch (err) {
+    console.error("Failed to load categories:", err)
+  }
+}
+
+// Call it in useEffect along with spaces and locations
+useEffect(() => {
+  fetchSpaces()
+  fetchLocations()
+  fetchCategories()
+}, [])
+
 
   const fetchSpaces = async () => {
     setLoading(true)
@@ -292,20 +317,22 @@ export default function AdminSpaces() {
             <label className="text-sm font-medium text-gray-700">Name</label>
             <Input value={formState.name} onChange={(e) => handleChange("name", e.target.value)} placeholder="Ultra private suite" />
           </div>
-          <div className="flex flex-col gap-2">
-            <label className="text-sm font-medium text-gray-700">Category</label>
-            <select
-              value={formState.category}
-              onChange={(e) => handleChange("category", e.target.value)}
-              className="rounded-md border border-gray-200 bg-white px-3 py-2 text-sm"
-            >
-              {["private", "meeting", "hot-desk", "event"].map((option) => (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              ))}
-            </select>
-          </div>
+        <div className="flex flex-col gap-2">
+  <label className="text-sm font-medium text-gray-700">Category</label>
+  <select
+    value={formState.category}
+    onChange={(e) => handleChange("category", e.target.value)}
+    className="rounded-md border border-gray-200 bg-white px-3 py-2 text-sm"
+  >
+    <option value="">Select category</option>
+    {categories.map((cat) => (
+      <option key={cat.id} value={cat.name}>
+        {cat.name}
+      </option>
+    ))}
+  </select>
+</div>
+
           <div className="flex flex-col gap-2">
             <label className="text-sm font-medium text-gray-700">Capacity</label>
             <Input
