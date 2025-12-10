@@ -1,104 +1,143 @@
 "use client";
 
-import { useState } from "react";
-import { motion } from "framer-motion";
-import { Menu, X, LogOut } from "lucide-react";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
+import { Menu, X, LogOut, Phone, Mail, ChevronDown } from "lucide-react";
 import Link from "next/link";
 import { useAuth } from "@/context/auth-context";
+import logo from "../public/assets/WhatsApp Image 2025-12-07 at 08.32.18.jpeg";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const { user, logout, isAuthenticated } = useAuth();
+  const { scrollY } = useScroll();
+
+  const phone = "+1 (123) 456-7890";
+  const email = "info@company.com";
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    setScrolled(latest > 10);
+  });
+
+  const navItems = [
+    { name: 'Spaces', href: '#spaces' },
+    { name: 'Pricing', href: '#pricing' },
+    { name: 'About', href: '/about' },
+    { name: 'FAQ', href: '#faq' },
+  ];
 
   return (
     <motion.nav
       initial={{ opacity: 0, y: -20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="sticky top-0 z-50 backdrop-blur-md bg-white/70 border-b border-gray-200 shadow-md"
+      animate={{ 
+        opacity: 1, 
+        y: 0,
+        backgroundColor: scrolled ? 'rgba(255, 255, 255, 0.95)' : 'rgba(255, 255, 255, 0.85)',
+        boxShadow: scrolled ? '0 4px 30px rgba(0, 0, 0, 0.1)' : 'none'
+      }}
+      transition={{ duration: 0.3 }}
+      className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md border-b border-gray-100 transition-all duration-300"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-        <div className="flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <motion.div
-            whileHover={{ scale: 1.05 }}
+            whileHover={{ scale: 1.03 }}
             transition={{ type: "spring", stiffness: 400 }}
           >
-            <Link href="/" className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-xl flex items-center justify-center shadow-md">
-                <span className="text-white font-bold text-lg">W</span>
+            <Link href="/" className="flex items-center gap-3 group">
+              <div className="w-12 h-12 md:w-14 md:h-14 rounded-full overflow-hidden shadow-lg border-2 border-gray-900 group-hover:border-gray-700 transition-all duration-300">
+                <img
+                  src={logo.src}
+                  alt="Company Logo"
+                  className="w-full h-full object-cover"
+                />
               </div>
-              <div>
-                <span className="font-bold text-lg text-gray-800">
-                  Thrive Coworking Space
-                </span>
-                <p className="text-xs text-gray-500">Addis Ababa</p>
-              </div>
+              <span className="font-bold text-lg text-gray-900">
+                Thrive Coworking Space
+              </span>
             </Link>
           </motion.div>
 
-          {/* Desktop Menu */}
-          <div className="hidden md:flex items-center gap-10">
-            {["Spaces", "Pricing", "FAQ"].map((item) => (
-              <motion.a
-                key={item}
-                href={`#${item.toLowerCase()}`}
-                whileHover={{ color: "#06b6d4" }}
-                className="text-gray-700 hover:text-cyan-500 transition font-medium text-sm"
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-1">
+            {navItems.map((item, index) => (
+              <motion.div 
+                key={item.name}
+                className="relative group"
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 * index }}
               >
-                {item}
-              </motion.a>
+                <Link
+                  href={item.href}
+                  className="px-4 py-2.5 text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors duration-200 flex items-center group relative"
+                >
+                  {item.name}
+                  {item.children && <ChevronDown className="ml-1 h-4 w-4 opacity-70" />}
+                  <div className="absolute bottom-0 left-0 w-full h-0.5 bg-amber-400 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+                </Link>
+              </motion.div>
             ))}
-
-            {/* 🔥 Highlighted Contact Button */}
-            <Link
-              href="/contactus"
-              className="px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 font-semibold text-sm hover:scale-105"
+            
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 * navItems.length }}
             >
-              Contact Us
-            </Link>
+              <Link
+                href="/contact"
+                className="ml-2 px-5 py-2.5 bg-gray-900 text-amber-400 hover:text-amber-300 text-sm font-medium rounded-lg hover:bg-gray-800 transition-all duration-300 hover:-translate-y-0.5"
+              >
+                Contact Us
+              </Link>
+            </motion.div>
           </div>
 
-          {/* Auth Buttons */}
-          <div className="flex items-center gap-4">
-            {isAuthenticated && user ? (
-              <div className="flex items-center gap-4">
+          {/* Auth Buttons & Mobile Menu Toggle */}
+          <div className="flex items-center space-x-4">
+            {isAuthenticated && (
+              <div className="hidden md:flex items-center space-x-4">
                 <div className="text-right hidden sm:block">
-                  <p className="text-sm font-semibold text-gray-800">
-                    {user.name}
-                  </p>
-                  <p className="text-xs text-gray-500">{user.role}</p>
+                  <p className="text-sm font-semibold text-gray-800">{user?.name || 'User'}</p>
+                  <p className="text-xs text-gray-500 capitalize">{user?.role || 'member'}</p>
                 </div>
-
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                
+                <div className="h-8 w-px bg-gray-200" />
+                
+                <motion.div 
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="relative group"
                 >
                   <Link
-                    href={user.role === "admin" ? "/admin" : "/bookings"}
-                    className="px-4 py-2 bg-cyan-500 text-white rounded-lg hover:bg-cyan-600 transition font-semibold text-sm"
+                    href={user?.role === "admin" ? "/admin" : "/bookings"}
+                    className="px-4 py-2 bg-gray-900 text-white text-sm font-medium rounded-lg hover:bg-gray-800 transition-all duration-300"
                   >
-                    {user.role === "admin" ? "Admin Panel" : "My Bookings"}
+                    {user?.role === "admin" ? "Dashboard" : "My Bookings"}
                   </Link>
+                  <div className="absolute -bottom-1 left-0 w-full h-0.5 bg-gray-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </motion.div>
 
                 <motion.button
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
                   onClick={logout}
-                  className="p-2 hover:bg-red-100 rounded-lg transition"
-                  title="Logout"
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  className="p-2 rounded-lg hover:bg-red-50 transition-colors duration-200"
+                  title="Sign out"
                 >
                   <LogOut className="w-5 h-5 text-red-500" />
                 </motion.button>
               </div>
-            ) : null}
+            )}
 
-            {/* Mobile Menu Button */}
+            {/* Mobile menu button */}
             <motion.button
               onClick={() => setIsOpen(!isOpen)}
-              whileHover={{ scale: 1.1 }}
+              className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
               whileTap={{ scale: 0.95 }}
-              className="md:hidden p-2"
+              aria-label={isOpen ? 'Close menu' : 'Open menu'}
             >
               {isOpen ? (
                 <X className="w-6 h-6 text-gray-800" />
@@ -110,43 +149,91 @@ export function Navbar() {
         </div>
 
         {/* Mobile Menu */}
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="md:hidden mt-6 space-y-3 pb-4 border-t border-gray-200 pt-4"
-          >
-            {["Spaces", "Pricing", "FAQ"].map((item) => (
-              <motion.a
-                key={item}
-                href={`#${item.toLowerCase()}`}
-                whileHover={{ x: 5 }}
-                className="block text-gray-700 hover:text-cyan-500 font-medium transition"
-              >
-                {item}
-              </motion.a>
-            ))}
-
-            {/* 🔥 Mobile Contact Button */}
-            <Link
-              href="/contactus"
-              className="block w-full text-center px-4 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-lg font-semibold shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105"
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ 
+                opacity: 1, 
+                height: 'auto',
+                transition: { duration: 0.3, ease: 'easeInOut' }
+              }}
+              exit={{ 
+                opacity: 0, 
+                height: 0,
+                transition: { duration: 0.3, ease: 'easeInOut' }
+              }}
+              className="md:hidden overflow-hidden"
             >
-              Contact Us
-            </Link>
+              <div className="pt-4 pb-6 space-y-1">
+                {navItems.map((item) => (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    className="block px-4 py-3 text-base font-medium text-gray-700 hover:bg-gray-50 rounded-lg transition-colors duration-200"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {item.name}
+                  </Link>
+                ))}
 
-            {isAuthenticated && (
-              <motion.button
-                onClick={logout}
-                whileHover={{ x: 5 }}
-                className="w-full text-left text-red-500 hover:text-red-400 font-semibold"
-              >
-                Logout
-              </motion.button>
-            )}
-          </motion.div>
-        )}
+                {/* Mobile Auth Buttons */}
+                {!isAuthenticated ? (
+                  <div className="px-4 pt-4 space-y-3 border-t border-gray-100">
+                    <Link
+                      href="/contact"
+                      className="block w-full px-4 py-2.5 text-center text-sm font-medium text-amber-400 hover:text-amber-300 bg-gray-900 rounded-lg hover:bg-gray-800 transition-colors"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Contact Us
+                    </Link>
+                  </div>
+                ) : (
+                  <div className="px-4 pt-4 space-y-3 border-t border-gray-100">
+                    <div className="px-4 py-2.5 bg-gray-50 rounded-lg border border-gray-100">
+                      <p className="text-sm font-medium text-gray-900">{user?.name || 'User'}</p>
+                      <p className="text-xs text-gray-600 capitalize">{user?.role || 'member'}</p>
+                    </div>
+                    <Link
+                      href={user?.role === "admin" ? "/admin" : "/bookings"}
+                      className="block w-full px-4 py-2.5 text-center text-sm font-medium text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      {user?.role === "admin" ? "Admin Dashboard" : "My Bookings"}
+                    </Link>
+                    <button
+                      onClick={() => {
+                        logout();
+                        setIsOpen(false);
+                      }}
+                      className="w-full px-4 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg transition-colors text-left"
+                    >
+                      Sign Out
+                    </button>
+                  </div>
+                )}
+
+                {/* Mobile Contact Info */}
+                <div className="px-4 pt-4 space-y-2 border-t border-gray-100">
+                  <a 
+                    href={`tel:${phone.replace(/\D/g, '')}`}
+                    className="flex items-center text-sm text-gray-600 hover:text-indigo-600 transition-colors"
+                  >
+                    <Phone className="w-4 h-4 mr-2 text-gray-600" />
+                    {phone}
+                  </a>
+                  <a 
+                    href={`mailto:${email}`}
+                    className="flex items-center text-sm text-gray-600 hover:text-indigo-600 transition-colors"
+                  >
+                    <Mail className="w-4 h-4 mr-2 text-gray-600" />
+                    {email}
+                  </a>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </motion.nav>
   );

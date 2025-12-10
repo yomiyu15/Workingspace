@@ -71,9 +71,10 @@ export function Pricing() {
     <section id="pricing" className="py-16 px-4 bg-background">
       <div className="max-w-6xl mx-auto">
         <div className="animate-fade-in">
-          <h4 className="text-3xl md:text-4xl font-bold text-center mb-3 text-balance bg-gradient-to-r from-accent via-primary to-accent bg-clip-text text-transparent">
-            Affordable Pricing Plans
-          </h4>
+        <h4 className="text-3xl md:text-4xl font-bold text-center mb-3 text-black">
+  Affordable Pricing Plans
+</h4>
+
           <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto text-sm md:text-base">
             All prices in Ethiopian Birr (ETB). Choose the plan that fits your work style and budget.
           </p>

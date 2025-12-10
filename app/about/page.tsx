@@ -1,14 +1,10 @@
-"use client";
-
-import Booking from "@/components/booking";
-import { Navbar } from "@/components/navbar";
-import { Footer } from "@/components/footer";
+import { AboutSection } from "@/components/aboutus";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
-export default function BookingPage() {
+export default function AboutPage() {
   return (
-    <main>
+    <main className="min-h-screen">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <Link 
           href="/" 
@@ -18,7 +14,7 @@ export default function BookingPage() {
           Back to Home
         </Link>
       </div>
-      <Booking />
+      <AboutSection />
     </main>
   );
 }

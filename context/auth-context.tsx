@@ -40,7 +40,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setUser(null)
   }
 
-  const logout = ({ silent }: { silent?: boolean } = {}) => {
+  const logout = ({ silent, redirectToLogin = false }: { silent?: boolean, redirectToLogin?: boolean } = {}) => {
     clearSession()
     if (!silent) {
       toast({
@@ -48,7 +48,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         description: "You have been securely logged out.",
       })
     }
-    if (typeof window !== "undefined") {
+    if (typeof window !== "undefined" && redirectToLogin) {
       window.location.href = "/login"
     }
   }
@@ -58,16 +58,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const lastActive = Number(localStorage.getItem(LAST_ACTIVE_KEY) || "0")
     const now = Date.now()
 
-    if (storedUser && now - lastActive <= SESSION_TIMEOUT_MS) {
-      setUser(JSON.parse(storedUser))
-      localStorage.setItem(LAST_ACTIVE_KEY, now.toString())
-    } else if (storedUser) {
-      logout({ silent: true })
-      toast({
-        title: "Session expired",
-        description: "Please log in again to continue.",
-        variant: "destructive",
-      })
+    if (storedUser) {
+      if (now - lastActive <= SESSION_TIMEOUT_MS) {
+        setUser(JSON.parse(storedUser))
+        localStorage.setItem(LAST_ACTIVE_KEY, now.toString())
+      } else {
+        // Clear expired session without redirecting
+        clearSession()
+        toast({
+          title: "Session expired",
+          description: "Your session has expired. Please log in again if needed.",
+          variant: "destructive",
+        })
+      }
     }
     setIsBootstrapped(true)
   }

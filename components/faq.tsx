@@ -5,6 +5,7 @@ import { motion } from "framer-motion"
 import { ChevronDown } from "lucide-react"
 
 import { API_BASE_URL } from "@/lib/config"
+import Link from "next/link"
 
 type FAQItem = {
   id: number
@@ -136,20 +137,18 @@ export function FAQ() {
           </motion.div>
         )}
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="mt-12 p-6 bg-blue-50 rounded-lg border border-blue-200 text-center"
-        >
-          <p className="text-slate-700 mb-3">Still have questions?</p>
-          <a
-            href="#contact"
-            className="inline-block px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-semibold"
+        {/* Call to Action */}
+        <div className="text-center mt-12">
+          <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
+            Ready to see your new workspace?
+          </h3>
+          <Link
+            href="/booking"
+            className="inline-block px-8 py-3 bg-gradient-to-r from-accent to-primary text-white font-semibold rounded-full hover:shadow-lg transition-shadow text-sm"
           >
-            Contact Our Support Team
-          </a>
-        </motion.div>
+            Book a Tour
+          </Link>
+        </div>
       </div>
     </section>
   )

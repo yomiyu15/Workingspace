@@ -97,29 +97,34 @@ export function Features() {
           </p>
         </motion.div>
 
-        <AnimatedStagger className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {features.map((feature, index) => {
-            const Icon = resolveIcon(feature.icon)
-            return (
-              <AnimatedItem key={`${feature.title}-${index}`}>
-                <motion.div
-                  whileHover={{ y: -8, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1)" }}
-                  transition={{ type: "spring", stiffness: 300 }}
-                  className="flex flex-col p-6 border border-border rounded-lg hover:shadow-lg transition"
-                >
-                  <motion.div
-                    className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center mb-4"
-                    whileHover={{ scale: 1.1, rotate: 5 }}
-                  >
-                    <Icon className="w-6 h-6 text-blue-600" />
-                  </motion.div>
-                  <h3 className="text-lg font-semibold mb-2">{feature.title}</h3>
-                  <p className="text-muted-foreground text-sm">{feature.description}</p>
-                </motion.div>
-              </AnimatedItem>
-            )
-          })}
-        </AnimatedStagger>
+       <AnimatedStagger className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+  {features.map((feature, index) => {
+    const Icon = resolveIcon(feature.icon)
+    return (
+      <AnimatedItem key={`${feature.title}-${index}`}>
+        <motion.div
+          whileHover={{ 
+            y: -8, 
+            boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1)",
+            background: "linear-gradient(135deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.8) 100%)",
+            borderColor: "rgba(0, 0, 0, 0.1)"
+          }}
+          transition={{ type: "spring", stiffness: 300 }}
+          className="flex flex-col p-6 border rounded-lg hover:shadow-lg transition-all duration-300 bg-gradient-to-br from-black to-gray-900"
+        >
+          <motion.div
+            className="w-14 h-14 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center mb-4"
+            whileHover={{ scale: 1.1, rotate: 5 }}
+          >
+            <Icon className="w-6 h-6 text-white" />
+          </motion.div>
+          <h3 className="text-lg font-semibold mb-2 text-white">{feature.title}</h3>
+          <p className="text-gray-300 text-sm">{feature.description}</p>
+        </motion.div>
+      </AnimatedItem>
+    )
+  })}
+</AnimatedStagger>
       </div>
     </section>
   )

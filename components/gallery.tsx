@@ -253,22 +253,11 @@ export function Gallery() {
           transition={{ duration: 0.8 }}
           className="text-center mb-12 md:mb-16"
         >
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.2 }}
-            className="inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-50 border border-emerald-200 rounded-full mb-6 backdrop-blur-sm"
-          >
-            <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
-            <span className="text-emerald-600 text-sm font-medium">Gallery</span>
-          </motion.div>
+         
+<h2 className="text-4xl md:text-5xl lg:text-4xl font-bold mb-4 text-black">
+  Explore Our Spaces
+</h2>
 
-          <h2 className="text-4xl md:text-5xl lg:text-4xl font-bold mb-4 text-slate-900">
-            <span className="bg-gradient-to-r from-emerald-600 via-cyan-600 to-blue-600 bg-clip-text text-transparent">
-              Explore Our Spaces
-            </span>
-          </h2>
 
           <p className="text-slate-600 max-w-2xl mx-auto text-base md:text-lg leading-relaxed">
             Flexible workspaces designed for productivity, collaboration, and creativity
@@ -292,32 +281,33 @@ export function Gallery() {
           {galleryCategories.map((cat) => {
             const isActive = activeCategory === cat.id
             return (
-              <motion.button
-                key={cat.id}
-                onClick={() => setActiveCategory(cat.id)}
-                whileHover={{ scale: 1.05, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-                className={`px-5 py-2.5 rounded-full font-semibold transition-all text-sm ${
-                  isActive
-                    ? "bg-gradient-to-r from-emerald-500 to-cyan-500 text-white shadow-lg shadow-emerald-500/30"
-                    : "border border-slate-200 bg-slate-100 text-slate-700 hover:border-slate-300 hover:bg-slate-50"
-                }`}
-              >
-                <span className="flex items-center gap-2">
-                  {cat.name}
-                  {cat.badge && (
-                    <span
-                      className={`rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${
-                        isActive
-                        ? "bg-white/25 text-white"
-                        : "bg-emerald-50 text-emerald-700"
-                      }`}
-                    >
-                      {cat.badge}
-                    </span>
-                  )}
-                </span>
-              </motion.button>
+             <motion.button
+  key={cat.id}
+  onClick={() => setActiveCategory(cat.id)}
+  whileHover={{ scale: 1.05, y: -2 }}
+  whileTap={{ scale: 0.95 }}
+  className={`px-5 py-2.5 rounded-full font-semibold transition-all text-sm ${
+    isActive
+      ? "bg-gradient-to-r from-[#D4AF37] to-[#FFD700] text-black shadow-lg shadow-black/30"
+      : "border border-slate-200 bg-white text-slate-900 hover:border-black hover:bg-black/5"
+  }`}
+>
+  <span className="flex items-center gap-2">
+    {cat.name}
+    {cat.badge && (
+      <span
+        className={`rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${
+          isActive
+            ? "bg-black/10 text-black"
+            : "bg-[#FFF8E1] text-[#D4AF37]"
+        }`}
+      >
+        {cat.badge}
+      </span>
+    )}
+  </span>
+</motion.button>
+
             )
           })}
         </motion.div>
@@ -386,12 +376,13 @@ export function Gallery() {
                       whileInView={{ y: 0, opacity: 1 }}
                       transition={{ duration: 0.5 }}
                     >
-                      <div className="flex items-center gap-3 mb-2">
-                        <div className="w-1 h-6 bg-gradient-to-b from-emerald-400 to-cyan-400 rounded-full"></div>
-                        <h3 className="font-bold text-lg md:text-xl">
-                          {item.title}
-                        </h3>
-                      </div>
+                     <div className="flex items-center gap-3 mb-2">
+  <div className="w-1 h-6 bg-gradient-to-b from-amber-400 via-amber-500 to-amber-600 rounded-full"></div>
+  <h3 className="font-bold text-lg md:text-xl">
+    {item.title}
+  </h3>
+</div>
+
                       <p className="text-sm text-slate-200 ml-4">
                         {item.description}
                       </p>
@@ -435,55 +426,7 @@ export function Gallery() {
           </AnimatePresence>
         </motion.div>
 
-        {/* Booking Experience Highlights */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.3, delay: 0.2 }}
-          className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6 bg-slate-50/80 border border-slate-200 rounded-3xl p-6 md:p-10"
-        >
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-600 mb-3">
-              Booking flow
-            </p>
-            <h3 className="text-2xl font-semibold text-slate-900 mb-2">Reserve the way fast teams do</h3>
-            <p className="text-sm text-slate-600">
-              Mirror the frictionless experience from top workspace platforms: live availability, instant confirmations,
-              concierge follow-up within 30 minutes.
-            </p>
-          </div>
-          <div className="flex flex-col gap-3">
-            {[
-              "Choose your space & duration",
-              "Add services (IT setup, catering, parking)",
-              "Secure checkout or schedule a tour",
-            ].map((step) => (
-              <div key={step} className="flex items-center gap-3 p-3 bg-white rounded-2xl border border-slate-200">
-                <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-sm font-semibold">
-                  {step.split(" ")[0].charAt(0)}
-                </div>
-                <p className="text-sm text-slate-700">{step}</p>
-              </div>
-            ))}
-          </div>
-          <div className="space-y-4">
-            <div className="flex items-center gap-3 p-4 rounded-2xl bg-white border border-emerald-100">
-              <CalendarCheck2 className="w-10 h-10 text-emerald-500" />
-              <div>
-                <p className="text-sm font-semibold text-slate-900">Same-day tours</p>
-                <p className="text-xs text-slate-500">Concierge confirms within 30 min.</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-3 p-4 rounded-2xl bg-slate-900 text-white">
-              <MapPin className="w-10 h-10 text-emerald-300" />
-              <div>
-                <p className="text-sm font-semibold">Multi-city coverage</p>
-                <p className="text-xs text-white/70">Book once, access all Workingspace hubs.</p>
-              </div>
-            </div>
-          </div>
-        </motion.div>
+     
 
         {filteredItems.length > ITEMS_PER_PAGE && (
           <div className="mt-8 flex flex-col items-center justify-between gap-4 text-sm text-slate-600 md:flex-row">

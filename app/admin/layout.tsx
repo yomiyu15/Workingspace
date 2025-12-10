@@ -51,12 +51,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
       { label: "Bookings", href: "/admin/booking", icon: Calendar },
       { label: "Spaces", href: "/admin/spaces", icon: ImageIcon },
-            { label: "Categories", href: "/admin/category", icon: ImageIcon },
+      { label: "Categories", href: "/admin/category", icon: ImageIcon },
       { label: "Gallery", href: "/admin/gallery", icon: ImageIcon },
       { label: "Pricing", href: "/admin/pricing", icon: DollarSign },
       { label: "Features", href: "/admin/features", icon: Sparkles },
       { label: "Testimonials", href: "/admin/testimonials", icon: MessageSquare },
       { label: "FAQ", href: "/admin/faq", icon: HelpCircle },
+       { label: "Membership", href: "/admin/membership", icon: HelpCircle },
+
     ],
     [],
   )

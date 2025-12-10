@@ -10,8 +10,8 @@ export function Locations() {
     address: "Torhayloch, KolfeKeranio, Addis Ababa",
     spaces: 12,
     amenities: ["WiFi", "Parking", "Cafe", "Meeting Rooms"],
-    image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400&h=300&fit=crop",
-    mapLink: "https://www.google.com/maps/contrib/102030795905177538691/place/ChIJF-cCZtSHSxYRegys6vVlrKM/@9.0130609,38.7169007,1199m/data=!3m1!1e3!4m6!1m5!8m4!1e1!2s102030795905177538691!3m1!1e1?hl=en-GB&entry=ttu",
+    mapEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3977.7751666166916!2d38.71471241524784!3d9.013060892529103!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x164b853a71c07f7d%3A0xc4f6d8b30f4063b1!2sThrive%20Coworking%20Space!5e0!3m2!1sen!2set!4v1702015202!5m2!1sen!2set",
+    mapLink: "https://www.google.com/maps/contrib/102030795905177538691/place/ChIJF-cCZtSHSxYRegys6vVlrKM/@9.0130609,38.7169007,1199m/data=!3m1!1e3!4m6!1m5!8m4!1e1!2s102030795905177538691!3m1!1e1?hl=en-GB&entry=ttu"
   }
 
   return (
@@ -38,12 +38,20 @@ export function Locations() {
               transition={{ type: "spring", stiffness: 300 }}
               className="rounded-lg overflow-hidden border border-border shadow-md hover:shadow-lg transition"
             >
-              <motion.div
-                className="h-48 bg-cover bg-center"
-                style={{ backgroundImage: `url("${location.image}")` }}
-                whileHover={{ scale: 1.08 }}
-                transition={{ duration: 0.4 }}
-              />
+              {/* Embedded Google Map */}
+              <div className="h-96 w-full">
+                <iframe
+                  src={location.mapEmbed}
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="Thrive Coworking Space Map"
+                ></iframe>
+              </div>
+
               <div className="p-6 bg-white">
                 <h3 className="text-xl font-bold mb-2">{location.name}</h3>
                 <div className="flex items-start gap-2 mb-4">
@@ -57,9 +65,7 @@ export function Locations() {
                     {location.address}
                   </a>
                 </div>
-                <p className="text-sm font-semibold text-blue-600 mb-3">
-                  {location.spaces} Spaces Available
-                </p>
+             
                 <motion.div
                   className="flex flex-wrap gap-2"
                   variants={{
