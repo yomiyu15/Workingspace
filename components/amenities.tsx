@@ -1,104 +1,90 @@
-// app/amenities/page.tsx
-"use client";
+"use client"
 
-import { motion } from "framer-motion";
-import { Wifi, Monitor, Phone, Printer, Coffee, Sofa, ArrowRight } from "lucide-react";
-import Link from "next/link";
+import { 
+  Wifi, 
+  Coffee, 
+  Zap, 
+  ShieldCheck, 
+  Monitor, 
+  Users2, 
+  Clock, 
+  Printer 
+} from "lucide-react"
 
 const amenities = [
   {
-    icon: <Wifi className="w-8 h-8 text-amber-600" />,
-    title: "High-speed WiFi",
-    description: "Blazing fast internet connection throughout the space"
+    title: "High-Speed WiFi",
+    description: "Enterprise-grade fiber optic internet with backup redundancy.",
+    icon: <Wifi className="w-6 h-6" />,
   },
   {
-    icon: <Monitor className="w-8 h-8 text-amber-600" />,
-    title: "Conference Rooms",
-    description: "Professional meeting spaces for your business needs"
+    title: "Artisan Coffee",
+    description: "Unlimited premium coffee, specialty teas, and infused water.",
+    icon: <Coffee className="w-6 h-6" />,
   },
   {
-    icon: <Phone className="w-8 h-8 text-amber-600" />,
-    title: "Private Phone Booths",
-    description: "Soundproof booths for calls and focused work"
+    title: "24/7 Access",
+    description: "Work on your own schedule with secure keyless entry anytime.",
+    icon: <Clock className="w-6 h-6" />,
   },
   {
-    icon: <Printer className="w-8 h-8 text-amber-600" />,
-    title: "Printing & Scanning",
-    description: "High-quality printing and scanning facilities"
+    title: "Smart Meeting Rooms",
+    description: "Fully equipped rooms with 4K displays and video conferencing.",
+    icon: <Monitor className="w-6 h-6" />,
   },
   {
-    icon: <Coffee className="w-8 h-8 text-amber-600" />,
-    title: "Complimentary Refreshments",
-    description: "Coffee, tea, and snacks available all day"
+    title: "Community Events",
+    description: "Weekly networking mixers, workshops, and social gatherings.",
+    icon: <Users2 className="w-6 h-6" />,
   },
   {
-    icon: <Sofa className="w-8 h-8 text-amber-600" />,
-    title: "Lounge Areas",
-    description: "Comfortable spaces to relax and network"
-  }
-];
+    title: "Printing Station",
+    description: "Professional grade printing, scanning, and shredding services.",
+    icon: <Printer className="w-6 h-6" />,
+  },
+]
 
-export default function AmenitiesPage() {
+export function Amenities() {
   return (
-    <div className="min-h-screen bg-gray-50 py-16 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-16"
-        >
-          <h1 className="text-4xl font-bold text-gray-900 sm:text-5xl mb-4">
-            Our Amenities
-          </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Everything you need to work productively in a comfortable environment
+    <section className="py-24 bg-background relative overflow-hidden">
+      {/* Decorative background element */}
+      <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-primary/5 blur-[120px] rounded-full pointer-events-none" />
+      
+      <div className="container mx-auto px-6 relative z-10">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+          <div className="max-w-2xl">
+            <h2 className="text-primary font-bold tracking-widest text-xs uppercase mb-3">
+              Designed for productivity
+            </h2>
+            <h3 className="text-3xl md:text-5xl font-bold tracking-tight text-foreground">
+              Everything you need to <br />
+              <span className="text-primary italic">focus and grow.</span>
+            </h3>
+          </div>
+          <p className="text-muted-foreground max-w-xs text-sm md:text-base border-l-2 border-primary/20 pl-4">
+            We've taken care of all the details so you can focus on what matters most: your business.
           </p>
-        </motion.div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {amenities.map((amenity, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300"
-            >
-              <div className="w-16 h-16 bg-amber-50 rounded-full flex items-center justify-center mb-6 mx-auto">
-                {amenity.icon}
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2 text-center">
-                {amenity.title}
-              </h3>
-              <p className="text-gray-600 text-center">
-                {amenity.description}
-              </p>
-            </motion.div>
-          ))}
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}
-          className="mt-16 bg-gradient-to-r from-amber-50 to-yellow-50 rounded-2xl p-8 text-center"
-        >
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">
-            Ready to experience our space?
-          </h2>
-          <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
-            Join our community of professionals and enjoy all these amenities and more.
-          </p>
-          <Link
-            href="/contactus"
-            className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-amber-400 hover:bg-amber-400 shadow-sm hover:shadow-md transition-all"
-          >
-            Book a Tour
-            <ArrowRight className="ml-2 h-5 w-5" />
-          </Link>
-        </motion.div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {amenities.map((item, index) => (
+            <div 
+              key={index}
+              className="group p-8 rounded-3xl bg-card border border-border hover:border-primary/50 transition-all duration-300 hover:shadow-xl hover:shadow-primary/5"
+            >
+              <div className="w-12 h-12 rounded-2xl bg-secondary flex items-center justify-center text-primary mb-6 group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-300">
+                {item.icon}
+              </div>
+              <h4 className="text-xl font-bold text-foreground mb-3">
+                {item.title}
+              </h4>
+              <p className="text-muted-foreground leading-relaxed text-sm">
+                {item.description}
+              </p>
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
-  );
+    </section>
+  )
 }

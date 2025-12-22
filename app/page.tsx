@@ -7,8 +7,9 @@ import { Locations } from "@/components/locations";
 import { FAQ } from "@/components/faq";
 import { Testimonials } from "@/components/testimonials";
 import { Footer } from "@/components/footer";
-import { EventsCommunity } from "@/components/events";
-import AmenitiesPage from "@/components/amenities";
+import { Events } from "@/components/events";
+
+import { Amenities } from "@/components/amenities";
 
 
 
@@ -21,8 +22,8 @@ export default function Home() {
       <Gallery />
       <Features />
       <Pricing />
-      <AmenitiesPage/>
-      <EventsCommunity/>
+      <Amenities/>
+      <Events/>
       <Locations />
       <FAQ />
       <Testimonials />

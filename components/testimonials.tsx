@@ -72,17 +72,18 @@ export function Testimonials() {
   return (
     <section className="py-16 px-4 bg-background">
       <div className="max-w-6xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          <h2 className="text-4xl font-bold text-center mb-4 text-balance">What Our Users Say</h2>
-          <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
-            Join hundreds of professionals who trust Thrive Coworking Space in Addis Ababa
+    {/* Consistent Header Architecture */}
+        <div className="mb-20">
+          <span className="text-primary text-xs font-bold tracking-[0.3em] uppercase mb-4 block text-center md:text-left">
+            Voices
+          </span>
+          <h3 className="text-2xl md:text-4xl font-bold mb-4 text-foreground tracking-tight">
+            Trusted by the <span className="text-primary italic">best.</span>
+          </h3>
+          <p className="text-muted-foreground text-base md:text-lg max-w-2xl mx-auto md:mx-0 text-center md:text-left leading-relaxed">
+            Join hundreds of professionals who have redefined their work style at Thrive Coworking Space in Addis Ababa.
           </p>
-        </motion.div>
+        </div>
 
         {loading && (
           <div className="text-center text-sm text-muted-foreground py-10">Loading testimonials…</div>

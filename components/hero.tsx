@@ -1,122 +1,125 @@
-'use client'
+"use client"
 
-import Link from 'next/link'
+import Link from "next/link"
+import Image from "next/image"
+import { ArrowRight, Users, Building2, Calendar, Sparkles, Heart, MousePointerClick } from "lucide-react"
+import { Button } from "@/components/ui/button"
 
 interface HeroProps {
-  client?: 'tour' | 'membership'
+  client?: string;
 }
 
 export function Hero({ client }: HeroProps) {
-  const primaryButton = client === 'membership' 
-    ? { text: 'View Memberships →', href: '#pricing' } 
-    : { text: 'Book a Tour →', href: '/booking' }
-
-  // Use public folder paths
-  const images = [
-    '/assets/dane-deaner-_-KLkj7on_c-unsplash.jpg',
-    '/assets/copernico-p_kICQCOM4s-unsplash.jpg',
-    '/assets/dane-deaner-_-KLkj7on_c-unsplash.jpg',
-    '/assets/david-fintz-z-Jaxjj0KVY-unsplash.jpg'
-  ]
-  const mainImage = '/assets/alesia-kazantceva-VWcPlbHglYc-unsplash.jpg'
-
   return (
-  <section className="relative w-full min-50vh-screen bg-white overflow-hidden pt-20">
+    <section className="relative min-h-[85vh] flex items-center overflow-hidden bg-background pt-24 pb-12">
+      
+      {/* Background Animated Blobs */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-[10%] right-[-5%] w-[400px] h-[400px] rounded-full bg-primary/10 blur-[100px] animate-blob" />
+        <div className="absolute bottom-[10%] left-[5%] w-[350px] h-[350px] rounded-full bg-accent/10 blur-[100px] animate-blob animation-delay-2000" />
+      </div>
 
-      <div className="relative w-full h-full flex items-stretch">
-        {/* LEFT SECTION */}
-        <div className="w-full lg:w-1/2 relative z-20 py-16 sm:py-20 lg:py-28 px-6 sm:px-10 lg:px-22 flex flex-col justify-center bg-white">
-          {/* Floating Badge */}
-          <div className="absolute -top-3 left-6 px-4 py-1.5 bg-gradient-to-r from-primary/10 to-accent/10 backdrop-blur-sm rounded-full border border-primary/20">
-            <span className="text-sm font-medium bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">🚀 Now Open in Bole</span>
-          </div>
+      <div className="container mx-auto px-6 relative z-10">
+        <div className="grid lg:grid-cols-2 gap-10 items-center">
           
-          <div className="space-y-6">
-            <div className="relative">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-balance leading-tight bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/80">
-                Work. <span className="bg-gradient-to-r from-primary to-accent bg-clip-text">Connect.</span> Thrive.
+          {/* Left Column: Content */}
+          <div className="flex flex-col space-y-6">
+            <div className="space-y-4">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-wider">
+                <Sparkles className="w-3 h-3" />
+                Premium Workspace
+              </div>
+              
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-[1.1]">
+                Work. Connect. <br />
+                <span className="text-primary italic">Thrive.</span>
               </h1>
-              <div className="absolute -bottom-4 left-0 w-24 h-1.5 bg-gradient-to-r from-primary to-accent rounded-full"></div>
+              
+              <p className="text-base md:text-lg text-muted-foreground max-w-md leading-relaxed">
+                Flexible coworking and private office solutions designed to help you do your best work.
+              </p>
+            </div>
+
+            <div className="flex flex-wrap gap-3">
+              <Link href="/booking">
+                <Button size="lg" className="bg-primary text-primary-foreground hover:opacity-90 rounded-full px-7 h-11">
+                  Book a Tour
+                </Button>
+              </Link>
+              <Link href="#pricing">
+                <Button size="lg" variant="outline" className="rounded-full px-7 h-11 border-border">
+                  View Memberships
+                </Button>
+              </Link>
+            </div>
+
+            {/* Social Proof */}
+            <div className="flex items-center gap-3 pt-4">
+              <div className="flex -space-x-2">
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="w-8 h-8 rounded-full border-2 border-background bg-muted overflow-hidden">
+                    <img 
+                      src={`https://i.pravatar.cc/100?img=${i+10}`} 
+                      alt="member" 
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ))}
+              </div>
+              <p className="text-xs font-medium text-muted-foreground">
+                Join <span className="text-foreground font-bold">2,718+</span> professionals
+              </p>
+            </div>
+
+            {/* Minimalist Stats */}
+            <div className="grid grid-cols-3 gap-4 pt-6 border-t border-border/50 max-w-sm">
+              <div>
+                <div className="text-xl font-bold text-foreground">12</div>
+                <div className="text-[10px] uppercase tracking-tighter text-muted-foreground font-bold">Locations</div>
+              </div>
+              <div>
+                <div className="text-xl font-bold text-foreground">24/7</div>
+                <div className="text-[10px] uppercase tracking-tighter text-muted-foreground font-bold">Access</div>
+              </div>
+              <div>
+                <div className="text-xl font-bold text-foreground">100%</div>
+                <div className="text-[10px] uppercase tracking-tighter text-muted-foreground font-bold">Reliable</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column: Images */}
+          <div className="relative lg:ml-auto">
+            <div className="relative z-20 grid grid-cols-2 gap-6 items-center">
+              {/* Main Workspace Image */}
+              <div className="relative w-full h-[550px] lg:h-[650px] rounded-xl overflow-hidden shadow-2xl rotate-[-3deg] border-[6px] border-white dark:border-card">
+                 <img 
+                    src="https://images.unsplash.com/photo-1527192491265-7e15c55b1ed2?auto=format&fit=crop&q=80&w=800" 
+                    className="w-full h-full object-cover" 
+                    alt="Coworking space" 
+                 />
+              </div>
+
+              {/* Meeting Room Image */}
+              <div className="relative w-full h-[450px] lg:h-[550px] rounded-xl overflow-hidden shadow-xl rotate-[4deg] border-[6px] border-white dark:border-card mt-12">
+                 <img 
+                    src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=600" 
+                    className="w-full h-full object-cover" 
+                    alt="Meeting room" 
+                 />
+              </div>
+            </div>
+
+            {/* Floating Heart Icon */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
+              <Heart className="w-16 h-16 text-primary/20 fill-primary/10 rotate-12" />
             </div>
             
-            <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-xl relative pl-4 border-l-2 border-primary/20">
-              <span className="absolute -left-1 top-0 w-1 h-full bg-gradient-to-b from-primary to-accent rounded-full"></span>
-              Flexible coworking spaces and private office solutions thoughtfully designed to empower you and your team to focus, collaborate, and achieve your best work every day.
-            </p>
+            {/* Decorative background circle */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-primary/5 rounded-full blur-3xl -z-10" />
           </div>
-          
-           <div className="flex flex-wrap gap-4 my-8">
-    <Link 
-      href={primaryButton.href}
-      className={client === 'membership' 
-        ? "px-6 py-2 border border-yellow-600 text-yellow-600 font-semibold rounded-full hover:bg-yellow-600/10 transition-colors text-sm" 
-        : "px-6 py-2 bg-black text-yellow-600 font-semibold rounded-full hover:shadow-lg transition-shadow text-sm"
-      }
-    >
-      {primaryButton.text}
-    </Link>
 
-    <a 
-      href={client === 'membership' ? '/booking' : '#pricing'}
-      className={client === 'membership'
-        ? "px-6 py-2 bg-yellow-600 text-black font-semibold rounded-full hover:shadow-lg transition-colors text-sm"
-        : "px-6 py-2 border border-yellow-600 text-yellow-600 font-semibold rounded-full hover:bg-yellow-600/10 transition-colors text-sm"
-      }
-    >
-      {client === 'membership' ? 'Book a Tour →' : 'View Memberships →'}
-    </a>
-  </div>
-
-          {/* Stats */}
-          <div className="mt-12 pt-8 border-t border-border/10 relative">
-            <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-24 h-1.5 bg-gradient-to-r from-transparent via-primary/50 to-transparent rounded-full"></div>
-            <div className="grid grid-cols-3 gap-6">
-              {[
-                { value: '50+', label: 'Spaces', icon: '🏢' },
-                { value: '1K+', label: 'Members', icon: '👥' },
-                { value: '24/7', label: 'Access', icon: '🔑' }
-              ].map((stat, idx) => (
-                <div key={idx} className="group">
-                  <div className="flex items-baseline space-x-2">
-                    <span className="text-xl opacity-70 group-hover:opacity-100 transition-opacity">{stat.icon}</span>
-                    <p className="text-2xl sm:text-3xl font-black bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                      {stat.value}
-                    </p>
-                  </div>
-                  <p className="text-xs font-semibold text-muted-foreground/80 uppercase tracking-wider mt-1.5 pl-7">{stat.label}</p>
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
-
-        {/* RIGHT SECTION */}
-      {/* RIGHT SECTION */}
-<div className="hidden lg:flex w-1/2 relative items-center justify-center overflow-visible">
-
-  {/* NEW YELLOW GRADIENT */}
-  <div 
-    className="absolute inset-0 bg-gradient-to-r from-yellow-600 to-yellow-700 p-8 text-white"
-    style={{ borderRadius: '350px 0 0 350px', transform: 'translateX(40px)' }} 
-  />
-
-  <div className="absolute inset-0 overflow-hidden pointer-events-none">
-    <div className="absolute -top-40 -right-40 w-96 h-96 bg-white rounded-full mix-blend-multiply filter blur-3xl opacity-5" />
-    <div className="absolute bottom-10 right-32 w-80 h-80 bg-white rounded-full mix-blend-multiply filter blur-3xl opacity-15" />
-  </div>
-
-  <div className="relative z-10 w-full h-full flex items-center justify-center px-4 gap-4">
-    <div className="grid grid-cols-2 gap-3 flex-shrink-0">
-      {images.map((src, idx) => (
-        <img key={idx} src={src} alt={`Office ${idx + 1}`} className="w-32 h-32 rounded-2xl shadow-lg border-2 border-white/80 object-cover hover:scale-110 transition-transform duration-300" />
-      ))}
-    </div>
-    <div className="flex-shrink-0 h-96 w-64 overflow-hidden rounded-3xl shadow-2xl border-2 border-white/80">
-      <img src={mainImage} alt="Premium Coworking Space" className="h-full w-full object-cover animate-fade-in" />
-    </div>
-  </div>
-</div>
-
       </div>
     </section>
   )

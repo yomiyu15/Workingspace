@@ -1,11 +1,9 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { motion } from "framer-motion"
-import { ChevronDown } from "lucide-react"
-
+import { motion, AnimatePresence } from "framer-motion"
+import { ChevronDown, Plus, Minus } from "lucide-react"
 import { API_BASE_URL } from "@/lib/config"
-import Link from "next/link"
 
 type FAQItem = {
   id: number
@@ -23,30 +21,17 @@ export function FAQ() {
     const controller = new AbortController()
     const load = async () => {
       setLoading(true)
-      setError(null)
       try {
         const res = await fetch(`${API_BASE_URL}/faq`, { signal: controller.signal })
-        if (!res.ok) throw new Error("Failed to load FAQ")
+        if (!res.ok) throw new Error("Failed")
         const data = await res.json()
-        if (!controller.signal.aborted && Array.isArray(data)) {
-          setFaqData(
-            data
-              .filter((item: any) => item.visible !== false)
-              .map((item: any) => ({
-                id: item.id,
-                question: item.question,
-                answer: item.answer,
-              })),
-          )
+        if (!controller.signal.aborted) {
+          setFaqData(data.filter((i: any) => i.visible !== false))
         }
       } catch (err) {
-        if ((err as Error).name === "AbortError") return
-        console.error("Failed to fetch FAQs:", err)
-        setError("Unable to load FAQs right now.")
+        if ((err as Error).name !== "AbortError") setError("Unable to load.")
       } finally {
-        if (!controller.signal.aborted) {
-          setLoading(false)
-        }
+        if (!controller.signal.aborted) setLoading(false)
       }
     }
     load()
@@ -54,104 +39,76 @@ export function FAQ() {
   }, [])
 
   return (
-    <section className="py-16 px-4 bg-white">
-      <div className="max-w-3xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-12"
-        >
-          <h2 className="text-3xl md:text-4xl font-bold mb-3 text-balance">Frequently Asked Questions</h2>
-          <p className="text-muted-foreground">
-            Find answers to common questions about our workspace rental services
-          </p>
-        </motion.div>
+    <section className="py-24 px-6 bg-background border-t border-border/50">
+      <div className="max-w-4xl mx-auto">
+        
+        <div className="mb-20">
+          <span className="text-primary text-xs font-bold tracking-[0.3em] uppercase mb-4 block text-center md:text-left">
+           faq
+          </span>
+          <h3 className="text-2xl md:text-4xl font-bold mb-4 text-foreground tracking-tight">
+           FAQ <span className="text-primary italic"></span>
+          </h3>
+         
+        </div>
 
-        {loading && (
-          <div className="text-center text-sm text-muted-foreground py-8">Loading FAQs…</div>
-        )}
-
-        {!loading && error && (
-          <div className="text-center text-sm text-red-600 bg-red-50 border border-red-100 rounded-xl py-4">
-            {error}
+        {loading ? (
+          <div className="space-y-4">
+            {[1, 2, 3].map(i => <div key={i} className="h-16 bg-muted/50 rounded-2xl animate-pulse" />)}
           </div>
-        )}
-
-        {!loading && !error && faqData.length === 0 && (
-          <div className="text-center text-sm text-muted-foreground bg-muted/20 border border-muted rounded-xl py-6">
-            FAQs are not published yet. Please add them from the admin dashboard.
-          </div>
-        )}
-
-        {!loading && faqData.length > 0 && (
-          <motion.div
-            className="space-y-4"
-            variants={{
-              hidden: { opacity: 0 },
-              visible: {
-                opacity: 1,
-                transition: { staggerChildren: 0.05 },
-              },
-            }}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
+        ) : (
+          <div className="space-y-3">
             {faqData.map((faq) => (
-              <motion.div
-                key={faq.id}
-                variants={{
-                  hidden: { opacity: 0, y: 10 },
-                  visible: { opacity: 1, y: 0 },
-                }}
-                className="border border-border rounded-lg overflow-hidden hover:border-blue-400 transition"
+              <div 
+                key={faq.id} 
+                className={`transition-all duration-300 rounded-[1.5rem] border ${
+                  openId === faq.id ? 'border-primary bg-muted/30' : 'border-border bg-card/50'
+                }`}
               >
                 <button
                   onClick={() => setOpenId(openId === faq.id ? null : faq.id)}
-                  className="w-full px-6 py-4 flex items-center justify-between bg-slate-50 hover:bg-slate-100 transition"
+                  className="w-full px-8 py-6 flex items-center justify-between text-left group"
                 >
-                  <h3 className="font-semibold text-left text-slate-900">{faq.question}</h3>
-                  <motion.div
-                    animate={{ rotate: openId === faq.id ? 180 : 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="flex-shrink-0 ml-4"
-                  >
-                    <ChevronDown className="w-5 h-5 text-blue-600" />
-                  </motion.div>
+                  <span className="font-bold text-foreground text-sm md:text-base tracking-tight">{faq.question}</span>
+                  <div className={`shrink-0 transition-transform duration-300 ${openId === faq.id ? 'rotate-180' : ''}`}>
+                    {openId === faq.id ? (
+                      <Minus className="w-4 h-4 text-primary" />
+                    ) : (
+                      <Plus className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                    )}
+                  </div>
                 </button>
 
-                <motion.div
-                  initial={false}
-                  animate={{
-                    height: openId === faq.id ? "auto" : 0,
-                    opacity: openId === faq.id ? 1 : 0,
-                  }}
-                  transition={{ duration: 0.3 }}
-                  className="overflow-hidden"
-                >
-                  <p className="px-6 py-4 text-slate-600 leading-relaxed bg-white">{faq.answer}</p>
-                </motion.div>
-              </motion.div>
+                <AnimatePresence>
+                  {openId === faq.id && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      className="overflow-hidden"
+                    >
+                      <div className="px-8 pb-8 text-sm text-muted-foreground leading-relaxed max-w-2xl">
+                        {faq.answer}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
             ))}
-          </motion.div>
+          </div>
         )}
 
-        {/* Call to Action */}
-        <div className="text-center mt-12">
-          <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
-            Ready to see your new workspace?
-          </h3>
-          <Link
+        {/* CTA Footer - Consistent with Pricing */}
+        <div className="mt-20 pt-16 border-t border-border flex flex-col items-center">
+          <h3 className="text-xl md:text-3xl font-bold mb-8 tracking-tighter">Ready for a workspace that inspires?</h3>
+          <a
             href="/booking"
-            className="inline-block px-8 py-3 bg-gradient-to-r from-accent to-primary text-white font-semibold rounded-full hover:shadow-lg transition-shadow text-sm"
+            className="px-12 py-5 bg-foreground text-background font-bold text-xs uppercase tracking-[0.2em] hover:bg-primary transition-colors inline-block"
           >
-            Book a Tour
-          </Link>
+            Book a private tour
+          </a>
         </div>
       </div>
     </section>
   )
 }
-
-

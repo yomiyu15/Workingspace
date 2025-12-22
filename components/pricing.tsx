@@ -1,8 +1,7 @@
-'use client'
+"use client"
 
 import { useEffect, useState } from 'react'
-import { Check } from 'lucide-react'
-
+import { Check, ArrowRight } from 'lucide-react'
 import { API_BASE_URL } from '@/lib/config'
 
 type PricingPlan = {
@@ -19,10 +18,7 @@ const normalizeFeatures = (features: unknown): string[] => {
     return features.map((item) => (typeof item === 'string' ? item : JSON.stringify(item))).filter(Boolean)
   }
   if (typeof features === 'string') {
-    return features
-      .split(/[\n,]/)
-      .map((item) => item.trim())
-      .filter(Boolean)
+    return features.split(/[\n,]/).map((item) => item.trim()).filter(Boolean)
   }
   return []
 }
@@ -42,25 +38,20 @@ export function Pricing() {
         if (!res.ok) throw new Error('Failed to load pricing')
         const data = await res.json()
         if (!controller.signal.aborted && Array.isArray(data)) {
-          setPlans(
-            data.map((plan: any) => ({
-              name: plan.name,
-              price: plan.price,
-              period: plan.period,
-              description: plan.description,
-              features: normalizeFeatures(plan.features),
-              popular: Boolean(plan.popular),
-            })),
-          )
+          setPlans(data.map((plan: any) => ({
+            name: plan.name,
+            price: plan.price,
+            period: plan.period,
+            description: plan.description,
+            features: normalizeFeatures(plan.features),
+            popular: Boolean(plan.popular),
+          })))
         }
       } catch (err) {
         if ((err as Error).name === 'AbortError') return
-        console.error('Failed to fetch pricing:', err)
-        setError('Unable to load pricing plans right now.')
+        setError('Unable to load pricing.')
       } finally {
-        if (!controller.signal.aborted) {
-          setLoading(false)
-        }
+        if (!controller.signal.aborted) setLoading(false)
       }
     }
     load()
@@ -68,98 +59,97 @@ export function Pricing() {
   }, [])
 
   return (
-    <section id="pricing" className="py-16 px-4 bg-background">
-      <div className="max-w-6xl mx-auto">
-        <div className="animate-fade-in">
-        <h4 className="text-3xl md:text-4xl font-bold text-center mb-3 text-black">
-  Affordable Pricing Plans
-</h4>
-
-          <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto text-sm md:text-base">
-            All prices in Ethiopian Birr (ETB). Choose the plan that fits your work style and budget.
+    <section id="pricing" className="py-20 px-6 bg-background relative overflow-hidden">
+      <div className="max-w-6xl mx-auto relative z-10">
+        
+        {/* Header - Consistent with Gallery/Features */}
+        <div className="mb-16">
+          <span className="text-primary text-xs font-bold tracking-[0.2em] uppercase mb-3 block">
+            Membership
+          </span>
+         <h3 className="text-2xl md:text-4xl font-bold mb-4 text-foreground tracking-tight">
+            Simple, Transparent Pricing
+          </h3>
+          <p className="text-muted-foreground text-sm md:text-base max-w-xl leading-relaxed">
+            Choose the plan that fits your work style. No hidden fees, just pure productivity in the heart of Addis.
           </p>
         </div>
 
         {loading && (
-          <div className="text-center text-muted-foreground text-sm py-10">Loading pricing plans…</div>
-        )}
-
-        {!loading && error && (
-          <div className="text-center text-sm text-red-600 bg-red-50 border border-red-100 rounded-xl py-4">
-            {error}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="h-96 rounded-2xl bg-muted/20 animate-pulse border border-border/50" />
+            ))}
           </div>
         )}
 
-        {!loading && !error && plans.length === 0 && (
-          <div className="text-center text-sm text-muted-foreground bg-muted/20 border border-muted rounded-xl py-6">
-            Pricing plans have not been published yet. Please add them from the admin dashboard.
-          </div>
-        )}
-
-        {!loading && plans.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
+        {!loading && !error && plans.length > 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-stretch">
             {plans.map((plan, index) => (
               <div
                 key={`${plan.name}-${index}`}
-                className="flex animate-fade-in hover:scale-105 transition-transform duration-300"
-                style={{ animationDelay: `${0.1 * index}s` }}
+                className={`relative group flex flex-col p-8 rounded-2xl border transition-all duration-300 ${
+                  plan.popular 
+                    ? 'bg-card border-primary/40 shadow-xl shadow-primary/5 scale-100 md:scale-[1.03]' 
+                    : 'bg-card/50 border-border/50 hover:border-primary/20'
+                }`}
               >
-                <div
-                  className={`rounded-xl overflow-hidden transition flex flex-col w-full shadow-lg hover:shadow-2xl ${
+                {plan.popular && (
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-primary text-primary-foreground text-[10px] font-bold uppercase tracking-wider rounded-full">
+                    Most Popular
+                  </div>
+                )}
+
+                <div className="mb-8">
+                  <h3 className="text-lg font-bold text-foreground mb-2">{plan.name}</h3>
+                  <p className="text-[13px] text-muted-foreground leading-relaxed h-10 line-clamp-2">
+                    {plan.description}
+                  </p>
+                </div>
+
+                <div className="mb-8 flex items-baseline gap-1">
+                  <span className="text-3xl font-bold tracking-tight text-foreground">
+                    {typeof plan.price === 'number' ? plan.price.toLocaleString() : plan.price}
+                  </span>
+                  <span className="text-xs font-medium text-muted-foreground uppercase">
+                    ETB / {plan.period}
+                  </span>
+                </div>
+
+                <a
+                  href="/booking"
+                  className={`w-full py-3 rounded-xl font-bold text-[13px] text-center mb-8 flex items-center justify-center gap-2 transition-all ${
                     plan.popular
-                      ? 'ring-2 ring-accent md:scale-105 bg-gradient-to-br from-accent/10 to-primary/10'
-                      : 'bg-card'
+                      ? 'bg-primary text-primary-foreground hover:opacity-90'
+                      : 'bg-muted/50 text-foreground hover:bg-muted'
                   }`}
                 >
-                  <div className="p-6 flex flex-col flex-1">
-                    {plan.popular && (
-                      <div className="inline-block px-3 py-1 bg-gradient-to-r from-accent to-primary text-primary-foreground text-xs font-semibold rounded-full mb-3 w-fit">
-                        Most Popular
-                      </div>
-                    )}
+                  Get Started
+                  <ArrowRight className="w-4 h-4" />
+                </a>
 
-                    <div className="flex flex-col flex-1">
-                      <h3 className="text-xl font-bold text-foreground mb-1">{plan.name}</h3>
-                      <p className="text-muted-foreground text-sm mb-4">{plan.description}</p>
-
-                      <div className="mb-5 flex items-baseline gap-2">
-                        <span className="text-3xl font-black bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent">
-                          {plan.price}
-                        </span>
-                        <span className="text-xs text-muted-foreground">ETB</span>
-                        <span className="text-xs text-muted-foreground">{plan.period}</span>
-                      </div>
-
-                      <a
-                        href="/#booking"
-                        className={`w-full py-3 rounded-lg font-bold mb-6 text-sm text-center inline-block transition-all duration-300 hover:scale-105 hover:-translate-y-0.5 ${
-                          plan.popular
-                            ? 'bg-gradient-to-r from-accent to-primary text-primary-foreground hover:shadow-lg'
-                            : 'border-2 border-accent/40 text-accent hover:bg-accent/10 hover:border-accent/60'
-                        }`}
-                      >
-                        Book Now
-                      </a>
-
-                      <div className="space-y-3 flex-1">
-                        <div className="max-h-40 overflow-y-auto pr-2">
-                          {plan.features.map((feature, idx) => (
-                            <div
-                              key={`${feature}-${idx}`}
-                              className="flex items-start gap-3 py-1 animate-fade-in"
-                              style={{ animationDelay: `${0.05 * idx}s` }}
-                            >
-                              <Check className="w-4 h-4 text-accent flex-shrink-0 mt-0.5 font-bold" />
-                              <span className="text-sm text-foreground leading-tight">{feature}</span>
-                            </div>
-                          ))}
+                <div className="space-y-4">
+                  <p className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest">Included Features</p>
+                  <div className="space-y-3">
+                    {plan.features.map((feature, idx) => (
+                      <div key={idx} className="flex items-start gap-3">
+                        <div className="mt-1 bg-primary/10 rounded-full p-0.5">
+                            <Check className="w-3 h-3 text-primary" />
                         </div>
+                        <span className="text-[13px] text-muted-foreground leading-snug">{feature}</span>
                       </div>
-                    </div>
+                    ))}
                   </div>
                 </div>
               </div>
             ))}
+          </div>
+        )}
+
+        {/* Fallback for Empty State */}
+        {!loading && (error || plans.length === 0) && (
+          <div className="p-12 rounded-2xl border border-dashed border-border text-center">
+            <p className="text-sm text-muted-foreground">{error || "No plans currently available."}</p>
           </div>
         )}
       </div>
