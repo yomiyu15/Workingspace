@@ -141,14 +141,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </div>
 
         <div className="border-t border-border p-4">
-          <Button
-            variant="destructive"
-            className="w-full rounded-2xl bg-destructive text-destructive-foreground hover:bg-destructive/90"
-            onClick={() => setIsLogoutDialogOpen(true)}
-          >
-            <LogOut className="h-4 w-4" />
-            Logout
-          </Button>
+         <Button
+  variant="destructive"
+  className="w-full rounded-2xl bg-destructive text-destructive-foreground hover:bg-destructive/90"
+  onClick={() => setIsLogoutDialogOpen(true)}
+>
+  <LogOut className="h-4 w-4 text-white" />
+  Logout
+</Button>
+
         </div>
       </aside>
 
