@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import Image from "next/image"
 import Link from "next/link"
-import { MapPin, Users, X, ArrowUpRight } from "lucide-react"
+import { Users, X, ArrowUpRight } from "lucide-react"
 import { API_BASE_URL } from "@/lib/config"
 import { type Workspace, normalizeWorkspace } from "@/types/workspace"
 
@@ -101,7 +101,7 @@ export function Gallery() {
       <div className="max-w-7xl mx-auto">
         
         {/* Header Section */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-8">
           <div className="max-w-xl">
             <span className="text-primary text-[11px] font-semibold tracking-wide mb-2 block">
               Workspace Registry
@@ -111,25 +111,27 @@ export function Gallery() {
             </h2>
           </div>
 
-          {/* Sharp Category Filter - Normal Case */}
-          <div className="flex border border-slate-200">
-            {categories.map((cat) => (
-              <button
-                key={cat.id}
-                onClick={() => { setActiveCategory(cat.id); setPage(0); }}
-                className={`px-5 py-2 text-[13px] font-medium transition-all border-r last:border-r-0 border-slate-200 ${
-                  activeCategory === cat.id
-                    ? "bg-primary text-white"
-                    : "bg-white text-slate-500 hover:text-primary hover:bg-slate-50"
-                }`}
-              >
-                {cat.name}
-              </button>
-            ))}
+          {/* Responsive Sharp Category Filter */}
+          <div className="w-full md:w-auto overflow-hidden border border-slate-200">
+            <div className="flex overflow-x-auto no-scrollbar scroll-smooth">
+              {categories.map((cat) => (
+                <button
+                  key={cat.id}
+                  onClick={() => { setActiveCategory(cat.id); setPage(0); }}
+                  className={`px-6 py-3 text-[13px] font-medium transition-all border-r last:border-r-0 border-slate-200 whitespace-nowrap flex-shrink-0 ${
+                    activeCategory === cat.id
+                      ? "bg-primary text-white"
+                      : "bg-white text-slate-500 hover:text-primary hover:bg-slate-50"
+                  }`}
+                >
+                  {cat.name}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
-        {/* Sharp Grid with Lift-up Hover */}
+        {/* Gallery Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <AnimatePresence mode="popLayout">
             {paginatedItems.map((item) => {
@@ -148,7 +150,6 @@ export function Gallery() {
                       : "opacity-50"
                   }`}
                 >
-                  {/* Image */}
                   <div className="relative aspect-[16/10] mb-5 overflow-hidden bg-slate-100">
                     <Image
                       src={item.image}
@@ -158,7 +159,6 @@ export function Gallery() {
                     />
                   </div>
 
-                  {/* Body Content - Normal Case */}
                   <div className="flex flex-col flex-grow">
                     <div className="flex items-center justify-between mb-2">
                         <span className="text-[11px] font-bold text-primary tracking-wide capitalize">{item.category}</span>
@@ -190,7 +190,7 @@ export function Gallery() {
           </AnimatePresence>
         </div>
 
-        {/* Pagination - Normal Case */}
+        {/* Pagination */}
         {filteredItems.length > ITEMS_PER_PAGE && (
           <div className="mt-12 flex items-center justify-center gap-10 pt-10 border-t border-slate-100">
             <button 
@@ -214,7 +214,7 @@ export function Gallery() {
         )}
       </div>
 
-      {/* Modal - Normal Case */}
+      {/* Modal */}
       <AnimatePresence>
         {selectedItem && (
           <motion.div

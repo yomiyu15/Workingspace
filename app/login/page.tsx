@@ -108,7 +108,7 @@ export default function LoginPage() {
           </motion.div>
           <h1 className="text-3xl font-semibold tracking-wide text-white">Admin Login</h1>
           <p className="mt-2 text-sm text-white/70">
-            Access your workspace dashboard securely
+            Access your workspace dashboard 
           </p>
         </div>
 
@@ -120,7 +120,7 @@ export default function LoginPage() {
                 <User className="h-4 w-4 text-white/80" />
                 <input
                   type="text"
-                  placeholder="admin@workspace"
+                  placeholder=""
                   value={username}
                   onChange={(e) => {
                     setUsername(e.target.value)

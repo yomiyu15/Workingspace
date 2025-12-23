@@ -39,18 +39,18 @@ export function FAQ() {
   }, [])
 
   return (
-    <section className="py-20 px-6 bg-white border-t border-slate-100">
+    <section className="py-16 md:py-24 px-6 bg-white border-t border-slate-100">
       <div className="max-w-7xl mx-auto">
         
-        {/* Header - Consistent with Gallery/Pricing */}
-        <div className="mb-16 max-w-2xl">
-          <span className="text-primary text-[11px] font-semibold tracking-wide mb-2 block">
+        {/* Header - Responsive text sizes */}
+        <div className="mb-12 md:mb-20 max-w-2xl">
+          <span className="text-primary text-[10px] md:text-[11px] font-semibold tracking-wide mb-2 block uppercase">
             Common questions
           </span>
-          <h3 className="text-3xl font-bold text-slate-900 tracking-tight">
+          <h3 className="text-2xl md:text-4xl font-bold text-slate-900 tracking-tight leading-tight">
             Answers to your coworking questions
           </h3>
-          <p className="text-[14px] text-slate-500 leading-relaxed mt-3">
+          <p className="text-[13px] md:text-[15px] text-slate-500 leading-relaxed mt-4">
             Everything you need to know about memberships, day passes, meeting rooms, and how the Hub works.
           </p>
         </div>
@@ -67,16 +67,16 @@ export function FAQ() {
                 <div key={faq.id} className="group">
                   <button
                     onClick={() => setOpenId(openId === faq.id ? null : faq.id)}
-                    className="w-full py-8 flex items-center justify-between text-left transition-colors hover:text-primary"
+                    className="w-full py-6 md:py-10 flex items-start justify-between text-left transition-colors hover:text-primary gap-4"
                   >
-                    <span className="font-bold text-slate-900 text-base md:text-lg tracking-tight">
+                    <span className="font-bold text-slate-900 text-sm md:text-xl tracking-tight leading-snug">
                       {faq.question}
                     </span>
-                    <div className="shrink-0 ml-4">
+                    <div className="shrink-0 mt-1">
                       {openId === faq.id ? (
-                        <Minus className="w-5 h-5 text-primary" />
+                        <Minus className="w-4 h-4 md:w-5 md:h-5 text-primary" />
                       ) : (
-                        <Plus className="w-5 h-5 text-slate-300 group-hover:text-primary transition-colors" />
+                        <Plus className="w-4 h-4 md:w-5 md:h-5 text-slate-300 group-hover:text-primary transition-colors" />
                       )}
                     </div>
                   </button>
@@ -89,7 +89,7 @@ export function FAQ() {
                         exit={{ height: 0, opacity: 0 }}
                         className="overflow-hidden"
                       >
-                        <div className="pb-8 text-[14px] text-slate-500 leading-relaxed max-w-3xl">
+                        <div className="pb-8 md:pb-12 text-[13px] md:text-[16px] text-slate-500 leading-relaxed max-w-4xl">
                           {faq.answer}
                         </div>
                       </motion.div>
@@ -101,18 +101,18 @@ export function FAQ() {
           )}
         </div>
 
-        {/* CTA Footer - Consistent Sharp Style */}
-        <div className="mt-20 pt-16 border-t border-slate-100 flex flex-col md:flex-row items-center justify-between gap-8">
-          <div className="text-center md:text-left">
-            <h3 className="text-2xl font-bold text-slate-900 tracking-tight mb-2">
+        {/* CTA Footer - Responsive Flex Direction */}
+        <div className="mt-16 md:mt-24 pt-12 md:pt-20 border-t border-slate-100 flex flex-col lg:flex-row items-center lg:items-end justify-between gap-10">
+          <div className="text-center lg:text-left max-w-xl">
+            <h3 className="text-2xl md:text-4xl font-bold text-slate-900 tracking-tight mb-4">
               Ready for a workspace that inspires?
             </h3>
-            <p className="text-slate-500 text-sm">Join a community of ambitious creators and professionals.</p>
+            <p className="text-slate-500 text-sm md:text-base">Join a community of ambitious creators and professionals in a space designed for focus.</p>
           </div>
           
           <a
             href="/booking"
-            className="group flex items-center justify-center gap-3 px-10 h-14 bg-black text-white font-bold text-[13px] hover:bg-primary transition-all shadow-lg hover:shadow-primary/20"
+            className="group w-full sm:w-auto flex items-center justify-center gap-3 px-8 md:px-12 h-14 md:h-16 bg-black text-white font-bold text-[12px] md:text-[13px] hover:bg-primary transition-all shadow-lg hover:shadow-primary/20 whitespace-nowrap"
           >
             Book a private tour
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />

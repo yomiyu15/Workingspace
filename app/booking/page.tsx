@@ -12,6 +12,7 @@ import {
   Mail,
   Phone,
   Home,
+  Tag,
 } from "lucide-react"
 import Link from "next/link"
 import { Navbar } from "@/components/navbar"
@@ -142,6 +143,7 @@ export default function Booking() {
           <h1 className="font-bold text-xl md:text-2xl text-foreground">Workspace Booking</h1>
           <div className="w-10" />
         </div>
+
         {/* Progress Tracker */}
         <div className="flex justify-between mb-10">
           {["Space", "Dates", "Details"].map((step, i) => (
@@ -193,7 +195,10 @@ export default function Booking() {
                           >
                             <div className="flex items-center justify-between gap-3">
                               <span className="font-bold">{s.name}</span>
-                              {!available && <span className="text-[11px] font-semibold text-red-600 bg-red-50 px-2 py-1 rounded-md">Booked</span>}
+                              <div className="flex items-center gap-2">
+                                {s.priceDay && <span className="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded font-bold">{s.priceDay} Br/day</span>}
+                                {!available && <span className="text-[11px] font-semibold text-red-600 bg-red-50 px-2 py-1 rounded-md">Booked</span>}
+                              </div>
                             </div>
                             <span className="text-xs text-slate-500">{s.locationName}</span>
                           </button>
@@ -239,8 +244,8 @@ export default function Booking() {
               </div>
               {isSingleDay && (
                 <div className="grid grid-cols-2 gap-4">
-                   <input type="time" value={startTime} onChange={(e) => setStartTime(e.target.value)} className="p-4 bg-muted rounded-2xl border-none" />
-                   <input type="time" value={endTime} onChange={(e) => setEndTime(e.target.value)} className="p-4 bg-muted rounded-2xl border-none" />
+                    <input type="time" value={startTime} onChange={(e) => setStartTime(e.target.value)} className="p-4 bg-muted rounded-2xl border-none" />
+                    <input type="time" value={endTime} onChange={(e) => setEndTime(e.target.value)} className="p-4 bg-muted rounded-2xl border-none" />
                 </div>
               )}
               <div className="flex gap-4">
@@ -250,14 +255,33 @@ export default function Booking() {
             </div>
           )}
 
-          {/* STEP 3: CONTACT */}
+          {/* STEP 3: CONTACT & PRICING REVIEW */}
           {currentStep === "contact" && (
             <div className="space-y-6">
               <h2 className="text-2xl font-bold text-foreground">Review your request</h2>
+              
+              {/* Dynamic Pricing Table */}
+              <div className="grid grid-cols-3 gap-2 mb-4">
+                {[
+                  { label: "Hourly", price: selectedSpace?.priceHour },
+                  { label: "Daily", price: selectedSpace?.priceDay },
+                  { label: "Monthly", price: selectedSpace?.priceMonth },
+                ].map((tier) => (
+                  <div key={tier.label} className={`p-3 rounded-2xl border ${durationUnit === tier.label.toLowerCase().slice(0,3) ? 'border-primary bg-primary/5' : 'border-border bg-card'} text-center`}>
+                    <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-bold">{tier.label}</p>
+                    <p className="text-sm font-bold text-foreground">{tier.price ? `${tier.price} Br` : 'N/A'}</p>
+                  </div>
+                ))}
+              </div>
+
               <div className="bg-muted p-6 rounded-2xl space-y-2 mb-6">
                 <p className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Space:</span>
                   <b className="text-foreground">{selectedSpace?.name}</b>
+                </p>
+                <p className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">Selected Duration:</span>
+                  <b className="text-foreground capitalize">{durationUnit}</b>
                 </p>
                 <p className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Dates:</span>
@@ -265,10 +289,16 @@ export default function Booking() {
                     {startDate} {endDate ? `to ${endDate}` : ""}
                   </b>
                 </p>
-                <p className="mt-3 text-xs text-muted-foreground">
-                  Final pricing will be confirmed by our team based on your requested duration and availability.
-                </p>
+                <div className="pt-3 mt-3 border-t border-border/50 flex justify-between items-center">
+                   <span className="text-xs font-bold text-primary flex items-center gap-1">
+                     <Tag className="w-3 h-3" /> Base Rate:
+                   </span>
+                   <span className="text-lg font-black text-foreground">
+                      {durationUnit === 'day' ? selectedSpace?.priceDay : durationUnit === 'month' ? selectedSpace?.priceMonth : 'Custom'} Br
+                   </span>
+                </div>
               </div>
+
               <div className="space-y-4">
                 <div className="relative">
                    <User className="absolute left-4 top-4 h-5 w-5 text-muted-foreground" />
@@ -283,6 +313,7 @@ export default function Booking() {
                    <input placeholder="Phone" value={phone} onChange={(e) => setPhone(e.target.value)} className="w-full pl-12 p-4 bg-muted rounded-2xl border-none" />
                 </div>
               </div>
+
               <div className="flex gap-4">
                 <button onClick={prevStep} className="flex-1 py-4 border-2 border-border rounded-2xl font-bold">Back</button>
                 <button disabled={isSubmitting || !name || !email} onClick={submitBooking} className="flex-[2] py-4 bg-primary text-primary-foreground rounded-2xl font-bold flex items-center justify-center gap-2">

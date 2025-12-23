@@ -6,7 +6,7 @@ import { ChevronLeft, ChevronRight, ArrowUpRight } from "lucide-react"
 const amenities = [
   { title: "High-speed WiFi", image: "https://images.unsplash.com/photo-1483478550801-ceba5fe50e8e?auto=format&fit=crop&w=900&q=80" },
   { title: "Meeting rooms", image: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=900&q=80" },
-  { title: "Coffee & lounge", image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=900&q=80" },
+ 
   { title: "Phone booths", image: "https://images.unsplash.com/photo-1556761175-4b46a572b786?auto=format&fit=crop&w=900&q=80" },
   { title: "24/7 access", image: "https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=900&q=80" },
   { title: "Event space", image: "https://images.unsplash.com/photo-1515165562835-c3b8c1c1cc2d?auto=format&fit=crop&w=900&q=80" },
