@@ -21,10 +21,11 @@ export function Navbar() {
   });
 
   const navItems = [
-    { name: 'Spaces', href: '#spaces' },
+    { name: 'Spaces', href: '/spaces' },
     { name: 'Pricing', href: '#pricing' },
     { name: 'About', href: '/about' },
     { name: 'FAQ', href: '#faq' },
+     { name: 'Membership', href: '/membership' },
   ];
 
   return (
@@ -33,14 +34,14 @@ export function Navbar() {
       animate={{ 
         opacity: 1, 
         y: 0,
-        backgroundColor: scrolled ? 'rgba(255, 255, 255, 0.95)' : 'rgba(255, 255, 255, 0.85)',
-        boxShadow: scrolled ? '0 4px 30px rgba(0, 0, 0, 0.1)' : 'none'
+        backgroundColor: scrolled ? 'rgba(255, 255, 255, 0.98)' : 'rgba(255, 255, 255, 0.9)',
+        boxShadow: scrolled ? '0 10px 40px rgba(15, 23, 42, 0.12)' : '0 0 0 rgba(0,0,0,0)'
       }}
-      transition={{ duration: 0.3 }}
-      className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md border-b border-gray-100 transition-all duration-300"
+      transition={{ duration: 0.3, ease: 'easeOut' }}
+      className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl border-b border-gray-100/70 transition-all duration-300"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between h-16 md:h-20 lg:h-24">
           {/* Logo */}
           <motion.div
             whileHover={{ scale: 1.03 }}
@@ -75,7 +76,6 @@ export function Navbar() {
                   className="px-4 py-2.5 text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors duration-200 flex items-center group relative"
                 >
                   {item.name}
-                  {item.children && <ChevronDown className="ml-1 h-4 w-4 opacity-70" />}
                   <div className="absolute bottom-0 left-0 w-full h-0.5 bg-amber-400 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
                 </Link>
               </motion.div>
@@ -86,12 +86,14 @@ export function Navbar() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 * navItems.length }}
             >
-              <Link
-                href="/contactus"
-                className="ml-2 px-5 py-2.5 bg-primary text-dark-400 hover:text-amber-300 text-sm font-medium rounded-lg hover:bg-gray-800 transition-all duration-300 hover:-translate-y-0.5"
-              >
-                Contact Us
-              </Link>
+              <motion.div whileHover={{ y: -2, scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                <Link
+                  href="/contactus"
+                  className="ml-2 px-5 py-2.5 bg-primary text-dark-400 hover:text-amber-300 text-sm font-medium rounded-lg hover:bg-gray-800 transition-all duration-300 shadow-md shadow-amber-400/30 hover:shadow-lg hover:shadow-amber-400/50"
+                >
+                  Contact Us
+                </Link>
+              </motion.div>
             </motion.div>
           </div>
 
@@ -121,7 +123,7 @@ export function Navbar() {
                 </motion.div>
 
                 <motion.button
-                  onClick={logout}
+                  onClick={() => logout()}
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
                   className="p-2 rounded-lg hover:bg-red-50 transition-colors duration-200"

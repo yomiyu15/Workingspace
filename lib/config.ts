@@ -2,7 +2,7 @@ const normalizeUrl = (value?: string) => (value ? value.replace(/\/+$/, "") : ""
 
 const envApi = normalizeUrl(process.env.NEXT_PUBLIC_API_URL)
 const envBase = normalizeUrl(process.env.NEXT_PUBLIC_BASE_URL)
-const defaultApiBase = "http://localhost:5000/api"
+const defaultApiBase = "https://workingspacebackend-1.onrender.com/api"
 
 export const API_BASE_URL = envApi || (envBase ? `${envBase}/api` : defaultApiBase)
 

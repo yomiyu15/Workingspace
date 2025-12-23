@@ -106,9 +106,12 @@ export function Testimonials() {
             {testimonials.map((testimonial, index) => (
               <AnimatedItem key={`${testimonial.name}-${index}`}>
                 <motion.div
-                  whileHover={{ y: -8, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1)" }}
+                  whileHover={{ y: -10, boxShadow: "0 24px 45px -12px rgba(15, 23, 42, 0.35)" }}
                   transition={{ type: "spring", stiffness: 300 }}
-                  className="p-6 bg-white rounded-lg border border-border shadow-md hover:shadow-lg transition"
+                  style={{
+                    minHeight: index % 3 === 0 ? "230px" : index % 3 === 1 ? "260px" : "290px",
+                  }}
+                  className="p-6 bg-white rounded-2xl border border-border shadow-md hover:shadow-xl transition"
                 >
                   <div className="flex items-center gap-4 mb-4">
                     <motion.img

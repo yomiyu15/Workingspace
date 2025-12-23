@@ -1,88 +1,88 @@
 "use client"
 
-import { 
-  Wifi, 
-  Coffee, 
-  Zap, 
-  ShieldCheck, 
-  Monitor, 
-  Users2, 
-  Clock, 
-  Printer 
-} from "lucide-react"
+import { useRef } from "react"
+import { ChevronLeft, ChevronRight } from "lucide-react"
 
 const amenities = [
-  {
-    title: "High-Speed WiFi",
-    description: "Enterprise-grade fiber optic internet with backup redundancy.",
-    icon: <Wifi className="w-6 h-6" />,
-  },
-  {
-    title: "Artisan Coffee",
-    description: "Unlimited premium coffee, specialty teas, and infused water.",
-    icon: <Coffee className="w-6 h-6" />,
-  },
-  {
-    title: "24/7 Access",
-    description: "Work on your own schedule with secure keyless entry anytime.",
-    icon: <Clock className="w-6 h-6" />,
-  },
-  {
-    title: "Smart Meeting Rooms",
-    description: "Fully equipped rooms with 4K displays and video conferencing.",
-    icon: <Monitor className="w-6 h-6" />,
-  },
-  {
-    title: "Community Events",
-    description: "Weekly networking mixers, workshops, and social gatherings.",
-    icon: <Users2 className="w-6 h-6" />,
-  },
-  {
-    title: "Printing Station",
-    description: "Professional grade printing, scanning, and shredding services.",
-    icon: <Printer className="w-6 h-6" />,
-  },
+  { title: "High-Speed WiFi", image: "https://images.unsplash.com/photo-1483478550801-ceba5fe50e8e?auto=format&fit=crop&w=900&q=80" },
+  { title: "Meeting Rooms", image: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=900&q=80" },
+  { title: "Coffee & Lounge", image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=900&q=80" },
+  { title: "Phone Booths", image: "https://images.unsplash.com/photo-1556761175-4b46a572b786?auto=format&fit=crop&w=900&q=80" },
+  { title: "24/7 Access", image: "https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=900&q=80" },
+  { title: "Event Space", image: "https://images.unsplash.com/photo-1515165562835-c3b8c1c1cc2d?auto=format&fit=crop&w=900&q=80" },
 ]
 
 export function Amenities() {
+  const trackRef = useRef<HTMLDivElement>(null)
+
+  const scrollTrack = (dir: "left" | "right") => {
+    const el = trackRef.current
+    if (!el) return
+    const amount = el.clientWidth * 0.8
+    el.scrollBy({ left: dir === "left" ? -amount : amount, behavior: "smooth" })
+  }
+
   return (
-    <section className="py-24 bg-background relative overflow-hidden">
-      {/* Decorative background element */}
-      <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-primary/5 blur-[120px] rounded-full pointer-events-none" />
-      
-      <div className="container mx-auto px-6 relative z-10">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
-          <div className="max-w-2xl">
-            <h2 className="text-primary font-bold tracking-widest text-xs uppercase mb-3">
-              Designed for productivity
-            </h2>
-            <h3 className="text-3xl md:text-5xl font-bold tracking-tight text-foreground">
-              Everything you need to <br />
-              <span className="text-primary italic">focus and grow.</span>
-            </h3>
-          </div>
-          <p className="text-muted-foreground max-w-xs text-sm md:text-base border-l-2 border-primary/20 pl-4">
-            We've taken care of all the details so you can focus on what matters most: your business.
+    <section className="py-20 sm:py-24 bg-background text-foreground">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="mb-12 sm:mb-16 max-w-4xl">
+          <span className="text-primary text-xs font-bold tracking-[0.2em] uppercase mb-3 block">
+            Amenities
+          </span>
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-3">
+            Modern comforts for productive coworking
+          </h2>
+          <p className="text-sm sm:text-base text-muted-foreground leading-relaxed max-w-3xl">
+            Modern design and comfortable, all-inclusive luxury. With our extensive range of amenities—from outdoor terraces to lounges and wellness spaces—you’ll love your time here.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {amenities.map((item, index) => (
-            <div 
-              key={index}
-              className="group p-8 rounded-3xl bg-card border border-border hover:border-primary/50 transition-all duration-300 hover:shadow-xl hover:shadow-primary/5"
-            >
-              <div className="w-12 h-12 rounded-2xl bg-secondary flex items-center justify-center text-primary mb-6 group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-300">
-                {item.icon}
-              </div>
-              <h4 className="text-xl font-bold text-foreground mb-3">
-                {item.title}
-              </h4>
-              <p className="text-muted-foreground leading-relaxed text-sm">
-                {item.description}
-              </p>
+        <div className="relative">
+          <div className="flex items-center justify-between mb-4 gap-3">
+            <div className="hidden sm:flex gap-2">
+              <button
+                onClick={() => scrollTrack("left")}
+                className="p-2 rounded-full border border-border hover:border-primary/70 hover:bg-muted transition-colors"
+                aria-label="Scroll amenities left"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+              <button
+                onClick={() => scrollTrack("right")}
+                className="p-2 rounded-full border border-border hover:border-primary/70 hover:bg-muted transition-colors"
+                aria-label="Scroll amenities right"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
             </div>
-          ))}
+          </div>
+
+          <div
+            ref={trackRef}
+            className="flex gap-4 sm:gap-6 overflow-x-auto pb-4 -mx-4 px-4 sm:mx-0 sm:px-0 scroll-smooth snap-x snap-mandatory"
+          >
+            {amenities.map((item) => (
+              <div
+                key={item.title}
+                className="relative group overflow-hidden rounded-2xl shadow-md shadow-black/10 min-w-[240px] sm:min-w-[300px] lg:min-w-[340px] snap-center"
+              >
+                <div className="relative aspect-[4/3]">
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors duration-300" />
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <span className="px-4 py-2 rounded-sm bg-amber-400 text-xs font-semibold uppercase tracking-[0.2em] text-slate-900 shadow-md">
+                      {item.title}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

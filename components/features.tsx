@@ -81,9 +81,11 @@ export function Features() {
   }, [])
 
   return (
-    <section className="relative py-20 px-6 overflow-hidden bg-background">
-      {/* Soft radial glow for depth */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-primary/5 blur-[120px] rounded-full pointer-events-none" />
+    <section className="relative py-20 px-6 overflow-hidden bg-gradient-to-b from-background via-background to-primary/5">
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute -left-20 top-0 w-[520px] h-[520px] bg-primary/6 blur-[150px]" />
+        <div className="absolute right-[-15%] bottom-[-10%] w-[520px] h-[520px] bg-accent/8 blur-[150px]" />
+      </div>
 
       <div className="max-w-6xl mx-auto relative z-10">
         <motion.div
@@ -91,43 +93,57 @@ export function Features() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-left mb-16 md:mb-20"
+          className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-16 md:mb-20"
         >
-          <span className="text-primary text-xs font-bold tracking-[0.2em] uppercase mb-3 block">
-            The Experience
-          </span>
-          <h3 className="text-2xl md:text-4xl font-bold mb-4 text-foreground tracking-tight">
-            Why WorkSpace Hub?
-          </h3>
-          <p className="text-muted-foreground text-sm md:text-base max-w-xl leading-relaxed">
-            Modern, secure, and flexible workspaces designed for Addis Ababa's next generation of builders.
-          </p>
+          <div>
+            <span className="text-primary text-xs font-bold tracking-[0.2em] uppercase mb-3 block">
+              The Experience
+            </span>
+            <h3 className="text-2xl md:text-4xl font-bold mb-3 text-foreground tracking-tight">
+              Why WorkSpace Hub?
+            </h3>
+            <p className="text-muted-foreground text-sm md:text-base max-w-xl leading-relaxed">
+              Modern, secure, and flexible workspaces designed for Addis Ababa's next generation of builders.
+            </p>
+          </div>
+          <div className="rounded-2xl border border-border/60 bg-card/70 backdrop-blur px-4 py-3 text-[11px] font-semibold text-muted-foreground inline-flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+            Live updates from member feedback
+          </div>
         </motion.div>
 
-        <AnimatedStagger className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5">
+        <AnimatedStagger className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
           {features.map((feature, index) => {
             const Icon = resolveIcon(feature.icon)
             return (
               <AnimatedItem key={`${feature.title}-${index}`}>
                 <motion.div
-                  whileHover={{ y: -5 }}
-                  className="group relative flex flex-col p-6 rounded-2xl bg-card/50 backdrop-blur-sm border border-border/50 hover:border-primary/30 transition-all duration-300 h-full overflow-hidden"
+                  initial={{ opacity: 0, y: 18, scale: 0.98 }}
+                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                  viewport={{ once: true, margin: "-10%" }}
+                  transition={{ duration: 0.45, delay: index * 0.04 }}
+                  whileHover={{ y: -8 }}
+                  className="group relative flex flex-col p-6 rounded-2xl bg-card/80 backdrop-blur border border-border/60 hover:border-primary/40 hover:-translate-y-2 transition-all duration-300 h-full overflow-hidden shadow-sm hover:shadow-lg hover:shadow-primary/10"
                 >
-                  {/* Subtle hover gradient */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                  
-                  <div className="relative z-10">
-                    <div className="w-10 h-10 mb-6 rounded-xl bg-primary/10 flex items-center justify-center text-primary transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3">
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+
+                  <div className="relative z-10 space-y-3">
+                    <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3">
                       <Icon className="w-5 h-5" />
                     </div>
-                    
-                    <h3 className="text-base font-semibold mb-2 text-foreground">
+
+                    <h3 className="text-base font-semibold text-foreground">
                       {feature.title}
                     </h3>
-                    
-                    <p className="text-[13px] text-muted-foreground leading-relaxed font-normal">
+
+                    <p className="text-[13px] text-muted-foreground leading-relaxed">
                       {feature.description}
                     </p>
+
+                    <div className="pt-2 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground group-hover:text-primary">
+                      <span className="w-1.5 h-1.5 rounded-full bg-primary/60 group-hover:bg-primary" />
+                      Included with every plan
+                    </div>
                   </div>
                 </motion.div>
               </AnimatedItem>

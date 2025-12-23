@@ -88,20 +88,20 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   ]
 
   return (
-    <div className="flex min-h-screen bg-gray-50 text-slate-900">
+    <div className="flex min-h-screen bg-background text-foreground">
       <aside
-        className={`fixed top-0 left-0 z-40 flex h-full w-[300px] flex-col border-r border-slate-100 bg-white/95 backdrop-blur-2xl transition-transform duration-300 md:static md:translate-x-0 ${
+        className={`fixed top-0 left-0 z-40 flex h-full w-[300px] flex-col border-r border-border bg-card/95 backdrop-blur-2xl transition-transform duration-300 md:static md:translate-x-0 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="flex h-20 items-center justify-between border-b border-slate-100 px-6">
+        <div className="flex h-20 items-center justify-between border-b border-border px-6">
           <div>
-            <p className="text-xs uppercase tracking-[0.35em] text-slate-400">Thrive Coworking Space</p>
-            <p className="text-lg font-semibold text-slate-900">Admin Suite</p>
+            <p className="text-xs uppercase tracking-[0.35em] text-muted-foreground">Thrive Coworking Space</p>
+            <p className="text-lg font-semibold text-foreground">Admin Suite</p>
           </div>
           <button
             onClick={() => setIsOpen(false)}
-            className="rounded-xl border border-slate-200 p-2 text-slate-500 transition hover:text-slate-900 md:hidden"
+            className="rounded-xl border border-border p-2 text-muted-foreground transition hover:text-foreground md:hidden"
             aria-label="Close navigation"
           >
             <X className="h-5 w-5" />
@@ -109,7 +109,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </div>
 
         <div className="flex-1 space-y-4 overflow-y-auto px-4 py-6">
-          <Badge variant="outline" className="border-emerald-200 text-emerald-600">
+          <Badge variant="outline" className="border-primary/30 text-primary">
             Session active · {user?.username}
           </Badge>
           <nav className="space-y-2">
@@ -123,15 +123,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                   onClick={() => setIsOpen(false)}
                   className={`group flex items-center gap-3 rounded-2xl border px-4 py-3 text-sm transition ${
                     isActive
-                      ? "border-emerald-200 bg-emerald-50 text-emerald-900 shadow-md"
-                      : "border-transparent text-slate-500 hover:border-slate-200 hover:bg-slate-50"
+                      ? "border-primary/40 bg-primary/10 text-foreground shadow-md"
+                      : "border-transparent text-muted-foreground hover:border-border hover:bg-muted"
                   }`}
                 >
-                  <Icon className={`h-5 w-5 ${isActive ? "text-emerald-600" : "text-slate-400"}`} />
+                  <Icon className={`h-5 w-5 ${isActive ? "text-primary" : "text-muted-foreground"}`} />
                   <span className="flex-1 font-medium">{item.label}</span>
                   <ChevronRight
                     className={`h-4 w-4 transition ${
-                      isActive ? "text-emerald-500/80" : "text-slate-300 group-hover:text-slate-500"
+                      isActive ? "text-primary/80" : "text-muted-foreground/50 group-hover:text-muted-foreground"
                     }`}
                   />
                 </Link>
@@ -140,10 +140,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </nav>
         </div>
 
-        <div className="border-t border-slate-100 p-4">
+        <div className="border-t border-border p-4">
           <Button
             variant="destructive"
-            className="w-full rounded-2xl bg-red-500 text-white hover:bg-red-600"
+            className="w-full rounded-2xl bg-destructive text-destructive-foreground hover:bg-destructive/90"
             onClick={() => setIsLogoutDialogOpen(true)}
           >
             <LogOut className="h-4 w-4" />
@@ -153,11 +153,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       </aside>
 
       <main className="flex flex-1 flex-col">
-        <header className="sticky top-0 z-30 border-b border-slate-100 bg-white/90 px-4 py-4 backdrop-blur">
+        <header className="sticky top-0 z-30 border-b border-border bg-background/90 px-4 py-4 backdrop-blur">
           <div className="flex items-center justify-between gap-4">
             <div>
-              <p className="text-xs uppercase tracking-[0.35em] text-slate-400">Currently viewing</p>
-              <h2 className="text-2xl font-semibold text-slate-900">{currentPage}</h2>
+              <p className="text-xs uppercase tracking-[0.35em] text-muted-foreground">Currently viewing</p>
+              <h2 className="text-2xl font-semibold text-foreground">{currentPage}</h2>
             </div>
             <div className="flex items-center gap-3">
               <div className="hidden sm:flex gap-2">
@@ -172,15 +172,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                   </div>
                 ))}
               </div>
-              <Button
-                variant="ghost"
-                className="rounded-full border border-slate-200 px-3 text-slate-500 hover:bg-slate-100"
-              >
+              <Button variant="ghost" className="rounded-full border border-border px-3 text-muted-foreground hover:bg-muted">
                 <BellRing className="h-4 w-4" />
               </Button>
               <Button
                 variant="ghost"
-                className="md:hidden rounded-full border border-slate-200 px-3 text-slate-600"
+                className="md:hidden rounded-full border border-border px-3 text-muted-foreground"
                 onClick={() => setIsOpen((prev) => !prev)}
                 aria-label="Open navigation"
               >
@@ -190,46 +187,49 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </div>
         </header>
 
-        <section className="relative flex-1 overflow-auto bg-gradient-to-br from-white via-slate-50 to-white px-4 py-8 md:px-10">
+        <section className="relative flex-1 overflow-auto bg-gradient-to-br from-background via-muted to-background px-4 py-8 md:px-10">
           <div className="pointer-events-none absolute inset-0 opacity-60">
-            <div className="absolute left-10 top-20 h-40 w-40 rounded-full bg-emerald-200/40 blur-3xl" />
-            <div className="absolute bottom-10 right-0 h-48 w-48 rounded-full bg-sky-200/40 blur-3xl" />
+            <div className="absolute left-10 top-20 h-40 w-40 rounded-full bg-primary/20 blur-3xl" />
+            <div className="absolute bottom-10 right-0 h-48 w-48 rounded-full bg-accent/20 blur-3xl" />
           </div>
 
           <div className="relative z-10">
             <div className="mb-6 grid gap-4 md:grid-cols-3">
-              <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
-                <p className="text-xs uppercase tracking-[0.35em] text-slate-400">Admin</p>
-                <p className="mt-2 text-lg font-semibold text-slate-900">{user?.name || user?.username}</p>
-                <p className="text-sm text-slate-500">Full access · Workspace orchestration</p>
+              <div className="rounded-3xl border border-border bg-card p-5 shadow-sm">
+                <p className="text-xs uppercase tracking-[0.35em] text-muted-foreground">Admin</p>
+                <p className="mt-2 text-lg font-semibold text-foreground">{user?.name || user?.username}</p>
+                <p className="text-sm text-muted-foreground">Full access · Workspace orchestration</p>
               </div>
-              <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
-                <p className="text-xs uppercase tracking-[0.35em] text-slate-400">Next review</p>
-                <p className="mt-2 text-2xl font-semibold text-slate-900">14:00</p>
-                <p className="text-sm text-slate-500">Bookings refresh window</p>
+              <div className="rounded-3xl border border-border bg-card p-5 shadow-sm">
+                <p className="text-xs uppercase tracking-[0.35em] text-muted-foreground">Next review</p>
+                <p className="mt-2 text-2xl font-semibold text-foreground">14:00</p>
+                <p className="text-sm text-muted-foreground">Bookings refresh window</p>
               </div>
-              <div className="rounded-3xl border border-emerald-100 bg-emerald-50 p-5 shadow-sm">
-                <p className="text-xs uppercase tracking-[0.35em] text-emerald-500">Status</p>
-                <p className="mt-2 text-2xl font-semibold text-emerald-700">Green</p>
-                <p className="text-sm text-emerald-600">Systems nominal · auto sync on</p>
+              <div className="rounded-3xl border border-primary/40 bg-primary/10 p-5 shadow-sm">
+                <p className="text-xs uppercase tracking-[0.35em] text-primary">Status</p>
+                <p className="mt-2 text-2xl font-semibold text-primary">Green</p>
+                <p className="text-sm text-primary/80">Systems nominal · auto sync on</p>
               </div>
             </div>
 
-            <div className="relative mb-8 rounded-[32px] border border-slate-200 bg-white p-6 text-slate-700 shadow-sm">
+            <div className="relative mb-8 rounded-[32px] border border-border bg-card p-6 text-muted-foreground shadow-sm">
               <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                 <div>
-                  <p className="text-xs uppercase tracking-[0.35em] text-slate-400">Live notice</p>
-                  <p className="mt-2 text-xl font-semibold text-slate-900">
+                  <p className="text-xs uppercase tracking-[0.35em] text-muted-foreground">Live notice</p>
+                  <p className="mt-2 text-xl font-semibold text-foreground">
                     Auto backups completed · latency optimized.
                   </p>
                 </div>
-                <Button variant="secondary" className="rounded-full border border-slate-200 bg-slate-50 text-slate-700 hover:bg-white">
+                <Button
+                  variant="secondary"
+                  className="rounded-full border border-border bg-muted text-foreground hover:bg-background"
+                >
                   View activity log
                 </Button>
               </div>
             </div>
 
-            <div className="rounded-[32px] border border-slate-200 bg-white p-6 shadow-xl">{children}</div>
+            <div className="rounded-[32px] border border-border bg-card p-6 shadow-xl">{children}</div>
           </div>
         </section>
       </main>

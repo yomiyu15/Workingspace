@@ -59,8 +59,8 @@ export function Events() {
           </div>
         </div>
 
-        {/* Events Grid - Bento/Gallery Style */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Events - horizontal carousel on mobile, grid on desktop */}
+        <div className="flex lg:grid lg:grid-cols-3 gap-6 lg:gap-8 overflow-x-auto pb-4 -mx-4 px-4 lg:mx-0 lg:px-0 scrollbar-thin scrollbar-thumb-muted-foreground/30">
           {upcomingEvents.map((event, index) => (
             <motion.div
               key={index}
@@ -68,7 +68,7 @@ export function Events() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
               viewport={{ once: true }}
-              className="group cursor-pointer"
+              className="group cursor-pointer flex-shrink-0 min-w-[260px] sm:min-w-[280px] lg:min-w-0"
             >
               {/* Image Container - Matches Gallery style */}
               <div className="relative aspect-[16/10] overflow-hidden rounded-2xl mb-6 bg-muted">

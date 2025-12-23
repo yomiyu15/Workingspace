@@ -39,18 +39,26 @@ export function FAQ() {
   }, [])
 
   return (
-    <section className="py-24 px-6 bg-background border-t border-border/50">
-      <div className="max-w-4xl mx-auto">
+    <section className="py-24 px-2 bg-background border-t border-border/50">
+      <div className="max-w-6xl mx-auto">
         
-        <div className="mb-20">
-          <span className="text-primary text-xs font-bold tracking-[0.3em] uppercase mb-4 block text-center md:text-left">
-           faq
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4 }}
+          className="mb-16 md:mb-20 max-w-3xl"
+        >
+          <span className="text-primary text-xs font-bold tracking-[0.3em] uppercase mb-3 block">
+            FAQ
           </span>
-          <h3 className="text-2xl md:text-4xl font-bold mb-4 text-foreground tracking-tight">
-           FAQ <span className="text-primary italic"></span>
+          <h3 className="text-2xl md:text-4xl font-bold mb-3 text-foreground tracking-tight">
+            Answers to your coworking questions
           </h3>
-         
-        </div>
+          <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
+            Everything you need to know about memberships, day passes, meeting rooms, and how Thrive Coworking works.
+          </p>
+        </motion.div>
 
         {loading ? (
           <div className="space-y-4">
@@ -58,11 +66,15 @@ export function FAQ() {
           </div>
         ) : (
           <div className="space-y-3">
-            {faqData.map((faq) => (
+            {faqData.map((faq, index) => (
               <div 
                 key={faq.id} 
                 className={`transition-all duration-300 rounded-[1.5rem] border ${
-                  openId === faq.id ? 'border-primary bg-muted/30' : 'border-border bg-card/50'
+                  openId === faq.id
+                    ? 'border-primary bg-muted/40'
+                    : index % 2 === 0
+                      ? 'border-border bg-card/60'
+                      : 'border-border bg-muted/20'
                 }`}
               >
                 <button

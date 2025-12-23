@@ -9,41 +9,15 @@ import { API_BASE_URL } from "@/lib/config"
 import { type Workspace, normalizeWorkspace } from "@/types/workspace"
 
 // ... types and categories remain unchanged ...
-type GalleryCategory = { id: string; name: string; badge?: string }
+type GalleryCategory = { id: string; name: string }
 type GalleryItem = {
   id: number; category: string; title: string; description: string; image: string;
   location: string; capacity: string; availability: string; rating: number;
   rates: { hourly: string; daily: string; monthly: string };
-  amenities: string[]; tags: string[]; bookingLeadTime: string; bookingLink?: string;
+  amenities: string[]; tags: string[]; bookingLeadTime: string; bookingLink?: string; inventoryCount?: number;
 }
 
-const galleryCategories: GalleryCategory[] = [
-  { id: "all", name: "All Spaces" },
-  { id: "private", name: "Private Offices", badge: "Popular" },
-  { id: "meeting", name: "Meeting Rooms" },
-  { id: "hot-desk", name: "Hot Desks" },
-  { id: "event", name: "Event Spaces" },
-]
-
 const ITEMS_PER_PAGE = 6
-// ... Fallback items and helper functions (formatPrice, resolveImageUrl, workspaceToGalleryItem) remain unchanged ...
-const FALLBACK_GALLERY_ITEMS: GalleryItem[] = [
-  {
-    id: 1,
-    category: "private",
-    title: "Private Office - Premium",
-    description: "Corner office with skyline views, perfect for exec teams up to 8.",
-    image: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=800",
-    location: "Level 18, Midtown Tower",
-    capacity: "Up to 8 people",
-    availability: "Available now",
-    rating: 4.9,
-    rates: { hourly: "Br 65", daily: "Br 420", monthly: "Br 4,900" },
-    amenities: ["Dedicated concierge", "Smart access"],
-    tags: ["Enterprise ready"],
-    bookingLeadTime: "Instant confirmation",
-  },
-]
 const FallbackAmenities = ["High speed WiFi", "Meeting rooms", "Coffee bar", "24/7 access"]
 const formatPrice = (value?: number, suffix = "") => (!value ? "-" : `Br ${Number(value).toLocaleString()}${suffix}`)
 const API_BASE_ORIGIN = API_BASE_URL.replace(/\/api\/?$/, "") || API_BASE_URL
@@ -71,12 +45,13 @@ const workspaceToGalleryItem = (workspace: Workspace): GalleryItem => ({
   tags: workspace.tags.length ? workspace.tags : [workspace.category || "Workspace"],
   bookingLeadTime: workspace.leadTime || "Instant",
   bookingLink: `/bookings?space=${workspace.id}`,
+  inventoryCount: workspace.inventoryCount,
 })
 
 export function Gallery() {
   const [activeCategory, setActiveCategory] = useState<string>("all")
   const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null)
-  const [galleryItems, setGalleryItems] = useState<GalleryItem[]>(FALLBACK_GALLERY_ITEMS)
+  const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [fetchError, setFetchError] = useState<string | null>(null)
   const [page, setPage] = useState(0)
@@ -85,7 +60,7 @@ export function Gallery() {
     let isMounted = true
     const fetchWorkspaces = async () => {
       try {
-        const response = await fetch(`${API_BASE_URL}/workspaces?limit=9`)
+        const response = await fetch(`${API_BASE_URL}/workspaces?status=active`)
         if (!response.ok) throw new Error()
         const payload = await response.json()
         if (Array.isArray(payload) && isMounted) {
@@ -101,6 +76,13 @@ export function Gallery() {
     return () => { isMounted = false }
   }, [])
 
+  const categories: GalleryCategory[] = useMemo(() => {
+    const uniq = new Set<string>()
+    galleryItems.forEach((item) => uniq.add(item.category || "uncategorized"))
+    const sorted = Array.from(uniq).sort()
+    return [{ id: "all", name: "All Spaces" }, ...sorted.map((id) => ({ id, name: id.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()) }))]
+  }, [galleryItems])
+
   const filteredItems = useMemo(() => 
     activeCategory === "all" ? galleryItems : galleryItems.filter(i => i.category === activeCategory)
   , [activeCategory, galleryItems])
@@ -111,7 +93,13 @@ export function Gallery() {
   }, [filteredItems, page])
 
   return (
-    <section className="relative py-20 px-6 bg-background">
+    <section className="relative py-20 px-6 bg-gradient-to-b from-background via-background to-primary/5 overflow-hidden">
+      {/* Soft background accents */}
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute -left-24 top-10 w-[420px] h-[420px] rounded-full bg-primary/8 blur-[140px]" />
+        <div className="absolute right-[-10%] bottom-[-10%] w-[420px] h-[420px] rounded-full bg-accent/8 blur-[140px]" />
+      </div>
+
       <div className="max-w-6xl mx-auto relative z-10">
         
         {/* Header - Consistent with Features */}
@@ -119,20 +107,28 @@ export function Gallery() {
           <span className="text-primary text-xs font-bold tracking-[0.2em] uppercase mb-3 block">
             The Collection
           </span>
-          <h3 className="text-2xl md:text-4xl font-bold mb-4 text-foreground tracking-tight">
-            Explore Our Spaces
-          </h3>
-          <p className="text-muted-foreground text-sm md:text-base max-w-xl leading-relaxed">
-            Curated environments designed for deep focus and high-impact collaboration.
-          </p>
+          <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+            <div>
+              <h3 className="text-2xl md:text-4xl font-bold mb-2 text-foreground tracking-tight">
+                Explore Our Spaces
+              </h3>
+              <p className="text-muted-foreground text-sm md:text-base max-w-xl leading-relaxed">
+                Curated environments designed for deep focus and high-impact collaboration.
+              </p>
+            </div>
+            <div className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-card/70 px-4 py-2 text-[11px] font-semibold text-muted-foreground">
+              <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+              Live inventory from our locations
+            </div>
+          </div>
         </div>
 
-        {/* Categories - Lightweight Pills */}
+        {/* Categories - Lightweight Pills (dynamic) */}
         <div className="flex flex-wrap gap-2 mb-10">
-          {galleryCategories.map((cat) => (
+          {categories.map((cat) => (
             <button
               key={cat.id}
-              onClick={() => setActiveCategory(cat.id)}
+              onClick={() => { setActiveCategory(cat.id); setPage(0); }}
               className={`px-4 py-1.5 rounded-full text-[13px] font-medium transition-all border ${
                 activeCategory === cat.id
                   ? "bg-primary text-primary-foreground border-primary"
@@ -147,58 +143,76 @@ export function Gallery() {
         {/* Gallery Grid - Clean & Consistent */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           <AnimatePresence mode="popLayout">
-            {paginatedItems.map((item) => (
-              <motion.div
-                key={item.id}
-                layout
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.3 }}
-                onClick={() => setSelectedItem(item)}
-                className="group cursor-pointer flex flex-col rounded-2xl bg-card/50 border border-border/50 hover:border-primary/30 transition-all overflow-hidden"
-              >
-                {/* Image */}
-                <div className="relative aspect-[16/10] overflow-hidden bg-muted">
-                  <Image
-                    src={item.image}
-                    alt={item.title}
-                    fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
-                  <div className="absolute top-3 left-3 bg-background/80 backdrop-blur-md px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider">
-                    {item.bookingLeadTime}
-                  </div>
-                </div>
-
-                {/* Content */}
-                <div className="p-5 flex flex-col flex-grow">
-                  <div className="flex justify-between items-start mb-2">
-                    <h4 className="text-base font-semibold text-foreground group-hover:text-primary transition-colors">
-                      {item.title}
-                    </h4>
-                    <ArrowUpRight className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
-                  </div>
-                  
-                  <p className="text-[13px] text-muted-foreground line-clamp-2 mb-4 leading-relaxed">
-                    {item.description}
-                  </p>
-
-                  <div className="mt-auto pt-4 border-t border-border/50 flex items-center justify-between">
-                    <div className="flex flex-col">
-                      <span className="text-[10px] uppercase text-muted-foreground font-bold">Starts from</span>
-                      <span className="text-sm font-bold">{item.rates.hourly}</span>
+            {paginatedItems.map((item) => {
+              const available = (item.inventoryCount ?? 1) > 0
+              return (
+                <motion.div
+                  key={item.id}
+                  layout
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 20 }}
+                  transition={{ duration: 0.35 }}
+                  onClick={() => available && setSelectedItem(item)}
+                  className={`group cursor-pointer flex flex-col rounded-2xl bg-card/70 border border-border/60 transition-all overflow-hidden ${
+                    available
+                      ? "hover:border-primary/40 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-primary/10"
+                      : "opacity-70"
+                  }`}
+                >
+                  {/* Image */}
+                  <div className="relative aspect-[16/10] overflow-hidden bg-muted">
+                    <Image
+                      src={item.image}
+                      alt={item.title}
+                      fill
+                      className={`object-cover transition-transform duration-700 ${available ? "group-hover:scale-110" : ""}`}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <div className="absolute top-3 left-3 bg-background/80 backdrop-blur-md px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider">
+                      {available ? item.bookingLeadTime : "Booked"}
                     </div>
-                    <div className="flex items-center gap-1.5 text-[11px] font-medium text-muted-foreground bg-muted/50 px-2 py-1 rounded-md">
-                      <Users className="w-3 h-3" />
-                      {item.capacity.split(' ').slice(1).join(' ')}
+                    <div className="absolute bottom-3 right-3 bg-background/80 backdrop-blur-md px-2.5 py-1 rounded-lg text-[10px] font-semibold text-muted-foreground flex items-center gap-1.5">
+                      <CalendarCheck2 className="w-3 h-3 text-primary" />
+                      From {item.rates.daily}
                     </div>
                   </div>
-                </div>
-              </motion.div>
-            ))}
+
+                  {/* Content */}
+                  <div className="p-5 flex flex-col flex-grow">
+                    <div className="flex justify-between items-start mb-2">
+                      <h4 className="text-base font-semibold text-foreground group-hover:text-primary transition-colors">
+                        {item.title}
+                      </h4>
+                      <ArrowUpRight className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                    </div>
+                    
+                    <p className="text-[13px] text-muted-foreground line-clamp-2 mb-4 leading-relaxed">
+                      {item.description}
+                    </p>
+
+                    <div className="mt-auto pt-4 border-t border-border/50 flex items-center justify-between">
+                      <div className="flex flex-col">
+                        <span className="text-[10px] uppercase text-muted-foreground font-bold">Starts from</span>
+                        <span className="text-sm font-bold">{item.rates.hourly}</span>
+                      </div>
+                      <div className="flex items-center gap-1.5 text-[11px] font-medium text-muted-foreground bg-muted/50 px-2 py-1 rounded-md">
+                        <Users className="w-3 h-3" />
+                        {item.capacity.split(' ').slice(1).join(' ')}
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              )
+            })}
           </AnimatePresence>
         </div>
+
+        {!isLoading && filteredItems.length === 0 && (
+          <div className="mt-10 p-8 rounded-2xl border border-dashed border-border text-center text-sm text-muted-foreground">
+            {fetchError || "No spaces available for this category yet."}
+          </div>
+        )}
 
         {/* Pagination - Minimalist */}
         {filteredItems.length > ITEMS_PER_PAGE && (

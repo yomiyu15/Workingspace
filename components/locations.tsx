@@ -43,6 +43,9 @@ export function Locations() {
               allowFullScreen
               loading="lazy"
             ></iframe>
+            {/* Floating map pins */}
+            <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-primary shadow-lg shadow-primary/60 border-2 border-background" />
+            <div className="absolute bottom-10 left-1/3 w-3 h-3 rounded-full bg-accent shadow-md shadow-accent/60 border border-background" />
             <a 
               href="https://maps.google.com" 
               target="_blank" 
