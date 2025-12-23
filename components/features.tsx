@@ -16,32 +16,32 @@ interface FeatureItem {
 
 const LOCAL_FEATURES: FeatureItem[] = [
   {
-    title: "Flexible Workspaces",
+    title: "Flexible workspaces",
     description: "Choose from hot desks, dedicated desks, or private offices tailored to your needs.",
     icon: "Laptop",
   },
   {
-    title: "High-Speed Internet",
+    title: "High-speed internet",
     description: "Lightning-fast fiber optic connectivity to keep you productive all day long.",
     icon: "Wifi",
   },
   {
-    title: "Meeting Rooms",
+    title: "Meeting rooms",
     description: "Professional spaces equipped with modern tech for your team collaborations.",
     icon: "Users",
   },
   {
-    title: "24/7 Access",
+    title: "24/7 access",
     description: "Work on your schedule with round-the-clock secure access to your workspace.",
     icon: "Clock",
   },
   {
-    title: "Community Events",
+    title: "Community events",
     description: "Network and grow with regular workshops, talks, and social gatherings.",
     icon: "Calendar",
   },
   {
-    title: "Prime Location",
+    title: "Prime location",
     description: "Conveniently located in the heart of the city with easy access to transport.",
     icon: "MapPin",
   },
@@ -81,68 +81,66 @@ export function Features() {
   }, [])
 
   return (
-    <section className="relative py-20 px-6 overflow-hidden bg-gradient-to-b from-background via-background to-primary/5">
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute -left-20 top-0 w-[520px] h-[520px] bg-primary/6 blur-[150px]" />
-        <div className="absolute right-[-15%] bottom-[-10%] w-[520px] h-[520px] bg-accent/8 blur-[150px]" />
-      </div>
-
-      <div className="max-w-6xl mx-auto relative z-10">
+    <section className="relative py-16 px-6 bg-white border-t border-slate-100">
+      <div className="max-w-7xl mx-auto relative z-10">
+        
+        {/* Header - Consistent with Gallery */}
         <motion.div
-          initial={{ opacity: 0, y: 15 }}
+          initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-16 md:mb-20"
+          className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12"
         >
-          <div>
-            <span className="text-primary text-xs font-bold tracking-[0.2em] uppercase mb-3 block">
-              The Experience
+          <div className="max-w-xl">
+            <span className="text-primary text-[11px] font-semibold tracking-wide mb-2 block">
+              The experience
             </span>
-            <h3 className="text-2xl md:text-4xl font-bold mb-3 text-foreground tracking-tight">
+            <h3 className="text-3xl font-bold tracking-tight text-slate-900">
               Why WorkSpace Hub?
             </h3>
-            <p className="text-muted-foreground text-sm md:text-base max-w-xl leading-relaxed">
-              Modern, secure, and flexible workspaces designed for Addis Ababa's next generation of builders.
+            <p className="text-slate-500 text-[14px] leading-relaxed mt-2">
+              Modern, secure, and flexible workspaces designed for the next generation of builders.
             </p>
           </div>
-          <div className="rounded-2xl border border-border/60 bg-card/70 backdrop-blur px-4 py-3 text-[11px] font-semibold text-muted-foreground inline-flex items-center gap-2">
+          
+          {/* Status Label - Sharp Corners */}
+          <div className="border border-slate-200 bg-white px-4 py-2 text-[12px] font-medium text-slate-500 inline-flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-            Live updates from member feedback
+            Live network updates
           </div>
         </motion.div>
 
-        <AnimatedStagger className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
+        {/* Features Grid - Consistent with Gallery Card Styles */}
+        <AnimatedStagger className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {features.map((feature, index) => {
             const Icon = resolveIcon(feature.icon)
             return (
               <AnimatedItem key={`${feature.title}-${index}`}>
                 <motion.div
-                  initial={{ opacity: 0, y: 18, scale: 0.98 }}
-                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                  viewport={{ once: true, margin: "-10%" }}
-                  transition={{ duration: 0.45, delay: index * 0.04 }}
-                  whileHover={{ y: -8 }}
-                  className="group relative flex flex-col p-6 rounded-2xl bg-card/80 backdrop-blur border border-border/60 hover:border-primary/40 hover:-translate-y-2 transition-all duration-300 h-full overflow-hidden shadow-sm hover:shadow-lg hover:shadow-primary/10"
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4 }}
+                  whileHover={{ y: -6 }}
+                  className="group relative flex flex-col p-8 bg-white border border-slate-200 transition-all duration-300 h-full hover:shadow-xl hover:border-primary/20"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                  {/* Icon Container - Sharp & Minimal */}
+                  <div className="w-12 h-12 border border-slate-100 bg-slate-50 flex items-center justify-center text-primary mb-6 transition-colors group-hover:bg-primary/5 group-hover:border-primary/10">
+                    <Icon className="w-6 h-6" />
+                  </div>
 
-                  <div className="relative z-10 space-y-3">
-                    <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3">
-                      <Icon className="w-5 h-5" />
-                    </div>
-
-                    <h3 className="text-base font-semibold text-foreground">
+                  <div className="space-y-3">
+                    <h3 className="text-lg font-bold text-slate-900">
                       {feature.title}
                     </h3>
 
-                    <p className="text-[13px] text-muted-foreground leading-relaxed">
+                    <p className="text-[13px] text-slate-500 leading-relaxed mb-6">
                       {feature.description}
                     </p>
 
-                    <div className="pt-2 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground group-hover:text-primary">
-                      <span className="w-1.5 h-1.5 rounded-full bg-primary/60 group-hover:bg-primary" />
-                      Included with every plan
+                    <div className="pt-4 border-t border-slate-100 flex items-center gap-2 text-[11px] font-semibold text-slate-400 group-hover:text-primary transition-colors">
+                      <span className="w-1 h-1 bg-slate-300 group-hover:bg-primary" />
+                      Included in all plans
                     </div>
                   </div>
                 </motion.div>
