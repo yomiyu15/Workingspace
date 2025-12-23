@@ -103,7 +103,7 @@ export function Hero() {
           >
             <div className="flex items-center gap-2 text-muted-foreground">
                 <MapPin className="w-4 h-4 text-primary" />
-                <span className="text-sm font-medium">Bole, Addis Ababa</span>
+                <span className="text-sm font-medium">Addis Ababa</span>
             </div>
             <div className="w-1 h-1 rounded-full bg-border" />
             <div className="flex items-center gap-2 text-muted-foreground">
@@ -147,7 +147,7 @@ export function Hero() {
              <div className="space-y-3">
                 <div className="flex justify-between items-center">
                     <span className="text-sm text-foreground">Private Offices</span>
-                    <span className="text-sm font-bold text-primary">2 Left</span>
+                   
                 </div>
                 <div className="w-full h-1.5 bg-muted rounded-full overflow-hidden">
                     <motion.div 

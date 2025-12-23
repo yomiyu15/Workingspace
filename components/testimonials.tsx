@@ -101,79 +101,84 @@ export function Testimonials() {
           </div>
         )}
 
-        {!loading && testimonials.length > 0 && (
-          <AnimatedStagger className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <AnimatedItem key={`${testimonial.name}-${index}`}>
-                <motion.div
-                  whileHover={{ y: -10, boxShadow: "0 24px 45px -12px rgba(15, 23, 42, 0.35)" }}
-                  transition={{ type: "spring", stiffness: 300 }}
-                  style={{
-                    minHeight: index % 3 === 0 ? "230px" : index % 3 === 1 ? "260px" : "290px",
-                  }}
-                  className="p-6 bg-white rounded-2xl border border-border shadow-md hover:shadow-xl transition"
-                >
-                  <div className="flex items-center gap-4 mb-4">
-                    <motion.img
-                      src={resolveImageUrl(testimonial.image)}
-                      alt={testimonial.name}
-                      className="w-12 h-12 rounded-full object-cover"
-                      whileHover={{ scale: 1.1 }}
-                    />
-                    <div>
-                      <p className="font-semibold text-slate-900">{testimonial.name}</p>
-                      <p className="text-xs text-muted-foreground">{testimonial.role}</p>
-                      {testimonial.company && (
-                        <p className="text-xs text-blue-600 font-medium">{testimonial.company}</p>
-                      )}
-                      {testimonial.verified && (
-                        <p className="mt-1 inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600">
-                          <BadgeCheck className="w-3 h-3" /> Verified Member
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                  <motion.div
-                    className="flex gap-1 mb-3"
-                    variants={{
-                      hidden: { opacity: 0 },
-                      visible: {
-                        opacity: 1,
-                        transition: { staggerChildren: 0.1 },
-                      },
-                    }}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true }}
-                  >
-                    {Array.from({ length: Math.max(1, Math.min(5, testimonial.rating)) }).map((_, i) => (
-                      <motion.div
-                        key={i}
-                        variants={{
-                          hidden: { scale: 0 },
-                          visible: { scale: 1 },
-                        }}
-                      >
-                        <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                      </motion.div>
-                    ))}
-                  </motion.div>
-                  <p className="text-sm text-muted-foreground italic">"{testimonial.text}"</p>
-                  {testimonial.source_url && (
-                    <a
-                      href={testimonial.source_url}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-slate-500 hover:text-slate-900 transition"
-                    >
-                      View profile <ExternalLink className="w-3 h-3" />
-                    </a>
-                  )}
-                </motion.div>
-              </AnimatedItem>
+      {!loading && testimonials.length > 0 && (
+  <AnimatedStagger className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
+    {testimonials.map((testimonial, index) => (
+      <AnimatedItem key={`${testimonial.name}-${index}`} className="h-full">
+        <motion.div
+          whileHover={{ y: -10, boxShadow: "0 24px 45px -12px rgba(15, 23, 42, 0.35)" }}
+          transition={{ type: "spring", stiffness: 300 }}
+          // Removed manual minHeight logic to allow flex-stretch to work
+          className="p-6 bg-white rounded-2xl border border-border shadow-md hover:shadow-xl transition h-full flex flex-col"
+        >
+          <div className="flex items-center gap-4 mb-4">
+            <motion.img
+              src={resolveImageUrl(testimonial.image)}
+              alt={testimonial.name}
+              className="w-12 h-12 rounded-full object-cover"
+              whileHover={{ scale: 1.1 }}
+            />
+            <div>
+              <p className="font-semibold text-slate-900">{testimonial.name}</p>
+              <p className="text-xs text-muted-foreground">{testimonial.role}</p>
+              {testimonial.company && (
+                <p className="text-xs text-blue-600 font-medium">{testimonial.company}</p>
+              )}
+              {testimonial.verified && (
+                <p className="mt-1 inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600">
+                  <BadgeCheck className="w-3 h-3" /> Verified Member
+                </p>
+              )}
+            </div>
+          </div>
+
+          <motion.div
+            className="flex gap-1 mb-3"
+            variants={{
+              hidden: { opacity: 0 },
+              visible: {
+                opacity: 1,
+                transition: { staggerChildren: 0.1 },
+              },
+            }}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            {Array.from({ length: Math.max(1, Math.min(5, testimonial.rating)) }).map((_, i) => (
+              <motion.div
+                key={i}
+                variants={{
+                  hidden: { scale: 0 },
+                  visible: { scale: 1 },
+                }}
+              >
+                <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+              </motion.div>
             ))}
-          </AnimatedStagger>
-        )}
+          </motion.div>
+
+          {/* flex-grow ensures this section fills the remaining space */}
+          <p className="text-sm text-muted-foreground italic flex-grow">
+            "{testimonial.text}"
+          </p>
+
+          {testimonial.source_url && (
+            <a
+              href={testimonial.source_url}
+              target="_blank"
+              rel="noreferrer"
+              className="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-slate-500 hover:text-slate-900 transition"
+            >
+              View profile <ExternalLink className="w-3 h-3" />
+            </a>
+          )}
+        </motion.div>
+      </AnimatedItem>
+    ))}
+  </AnimatedStagger>
+)}
+        
         
       </div>
       
